@@ -14,10 +14,10 @@ Prove both are reachable before any feature is built on top of them.
 ## Steps
 - [x] Install and verify PostgreSQL
 - [x] Install and verify Redis (Memurai)
-- [ ] Create LaunchForge database in PostgreSQL
-- [ ] Connect FastAPI to PostgreSQL
-- [ ] Connect FastAPI to Redis
-- [ ] Verify both connections respond correctly
+- [x] Create LaunchForge database in PostgreSQL
+- [x] Connect FastAPI to PostgreSQL
+- [x] Connect FastAPI to Redis
+- [x] Verify both connections respond correctly
 
 ## Rules
 - One connection at a time
