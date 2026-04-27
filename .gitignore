@@ -3,3 +3,6 @@
 __pycache__
 *.pyc
 00 - Milad.md
+node_modules/
+.env.*
+!.env.example
