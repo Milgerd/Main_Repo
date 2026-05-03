@@ -9,7 +9,8 @@
       "PowerShell($r = Invoke-WebRequest -Uri http://localhost:3000/api/login -Method POST -ContentType \"application/json\" -Body '{\"email\":\"second@user.com\",\"password\":\"234567\"}' -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\"; \"Body: $\\($r.Content\\)\")",
       "PowerShell(try { $r = Invoke-WebRequest -Uri http://localhost:3000/api/login -Method POST -ContentType \"application/json\" -Body '{\"email\":\"second@user.com\",\"password\":\"wrongpass\"}' -UseBasicParsing; \"Status: $\\($r.StatusCode\\)\"; \"Body: $\\($r.Content\\)\" } catch { \"Status: $\\($_.Exception.Response.StatusCode.Value__\\)\"; $reader = New-Object System.IO.StreamReader\\($_.Exception.Response.GetResponseStream\\(\\)\\); \"Body: $\\($reader.ReadToEnd\\(\\)\\)\" })",
       "PowerShell(try { Invoke-WebRequest -Uri http://localhost:3000/api/login -Method POST -ContentType \"application/json\" -Body '{\"email\":\"second@user.com\",\"password\":\"wrongpass\"}' -UseBasicParsing } catch { $_.ErrorDetails.Message })",
-      "PowerShell($r = Invoke-WebRequest -Uri http://localhost:3000/api/login -Method POST -ContentType \"application/json\" -Body '{\"email\":\"second@user.com\",\"password\":\"234567\"}' -UseBasicParsing; $r.Content)"
+      "PowerShell($r = Invoke-WebRequest -Uri http://localhost:3000/api/login -Method POST -ContentType \"application/json\" -Body '{\"email\":\"second@user.com\",\"password\":\"234567\"}' -UseBasicParsing; $r.Content)",
+      "PowerShell($word = New-Object -ComObject Word.Application; $word.Visible = $false; $doc = $word.Documents.Open\\('c:\\\\Users\\\\milad\\\\Main_Repo\\\\LaunchForge_AI_Master_Reference.docx'\\); $text = $doc.Content.Text; $doc.Close\\(\\); $word.Quit\\(\\); $text)"
     ]
   }
 }

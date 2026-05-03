@@ -1,0 +1,300 @@
+LaunchForge AI
+Internship Project — Master Reference Document
+End-to-End SaaS Platform Architecture & Delivery Roadmap
+Last Updated: 2026-05-03
+
+Intern: Milad
+GitHub: Milgerd / Main_Repo
+Stack: JavaScript (Node.js) · Express 5 · PostgreSQL · Redis (Memurai) · Docker · AWS · GitHub Actions
+Editor: VS Code + Claude Code Extension
+Current Phase: Phase 1 — Foundation Architecture
+Current Progress: Backend architecture built, auth system live, RBAC implemented
+
+
+========================================
+1. WHAT IS THIS PROJECT?
+========================================
+
+LaunchForge AI is a production-grade, AI-powered SaaS platform that automates MVP launch workflows for startups. It handles launch orchestration, campaign asset generation, analytics, and adaptive intelligence — all in one unified system.
+
+The name LaunchForge AI was created by the internship program. It does not exist as a real product — it is being built from scratch. The problem it solves (automating startup launches with AI) is real. The platform competes conceptually with tools like Notion, Zapier, Copy.ai, and HubSpot, but combines their capabilities into one intelligent system.
+
+What the Platform Does for Users:
+- Launch Orchestration — manages and sequences all tasks a startup needs to launch
+- Campaign Asset Automation — auto-generates marketing copy, emails, and ad content using AI
+- Analytics — tracks what is working and surfaces the numbers that matter
+- Adaptive Intelligence — learns from data and adjusts recommendations over time
+
+Your Role:
+You are acting as software architect, engineer, and product thinker. Your deliverable is both a detailed architecture plan and the actual built platform. You are not just writing code — you are designing, building, deploying, and operationalizing the entire system.
+
+
+========================================
+2. THE 6-PHASE ROADMAP
+========================================
+
+Phase  Layer         Primary Outcome                                       Status
+1      Foundation    Secure, deployable microservices architecture          IN PROGRESS
+2      Core System   Fully operational MVP automation platform              Pending
+3      Intelligence  AI-driven optimization & predictive capabilities       Pending
+4      Optimization  Performance-tuned, cost-efficient production system    Pending
+5      Hardening     Secure, compliant, enterprise-grade platform           Pending
+6      Scale         Multi-region, ecosystem-integrated SaaS platform       Pending
+
+Phase Descriptions:
+
+Phase 1 — Foundation
+Build the skeleton: cloud infrastructure, database design, security basics, CI/CD pipeline, environment configuration. Nothing works for users yet, but everything is ready to be built on.
+
+Phase 2 — Core System
+Build the actual product users interact with: login, dashboard, search, media management, APIs. This is the MVP — the minimum thing that works.
+
+Phase 3 — Intelligence
+Inject AI: content generation, smart recommendations, ROI predictions, feedback learning. This is where it goes from a tool to a smart tool.
+
+Phase 4 — Optimization
+Make it fast, efficient, and cost-controlled. Caching strategies, scaling, latency reduction. It works — now make it work well.
+
+Phase 5 — Hardening
+Make it trustworthy: encryption, GDPR/CCPA compliance, disaster recovery, AI safety guardrails. This separates a startup product from an enterprise product.
+
+Phase 6 — Scale
+Open it to the world: multi-region deployment, partner integrations, subscription tiers, advanced analytics. The ready-to-grow phase.
+
+
+========================================
+3. TECHNOLOGY STACK (ACTUAL)
+========================================
+
+Area                Tool / Technology         Purpose
+Backend             Node.js + Express 5       The engine of the platform (REST API server)
+Database            PostgreSQL                Permanent relational data storage
+Cache               Redis (via Memurai)       Fast in-memory data layer (not yet connected in code)
+DB Driver           pg (node-postgres)        Node.js PostgreSQL client with connection pooling
+Auth                JWT (jsonwebtoken)        Token-based authentication
+Password Hashing    bcrypt                    Secure password hashing
+Env Config          dotenv                    Loads .env variables into process.env
+Dev Tooling         nodemon                   Auto-restart server on file changes during development
+Containers          Docker                    Package and run apps consistently
+Cloud               AWS                       Where everything lives in production
+CI/CD               GitHub Actions            Automates test and deploy pipeline
+Frontend            React (planned)           User interface layer (not yet built)
+AI Layer            LLMs + Prompt Engineering Intelligence features in Phase 3
+Monitoring          Grafana / Prometheus      Watch the live system (planned)
+Version Control     Git + GitHub (Milgerd)    Code history and collaboration
+Editor              VS Code + Claude Code     Development environment
+
+NOTE: The project was originally scoped with Python + FastAPI + SQLAlchemy but was pivoted to JavaScript + Node.js + Express during implementation. Some older documentation files may still reference Python — the JavaScript stack is the actual one.
+
+
+========================================
+4. WHAT HAS BEEN BUILT (CURRENT STATE)
+========================================
+
+Module 1-3: Setup & Documentation [COMPLETE]
+  - Repository created locally and on GitHub
+  - VS Code + Claude Code extension installed
+  - CLAUDE.md created at repo root (Claude Code operating rules)
+  - ARCHITECTURE.md, SERVICES.md, ENVIRONMENT.md, README.md created
+
+Module 4: Database + Cache Baseline [COMPLETE]
+  - PostgreSQL installed and verified
+  - Redis (Memurai LTS) installed and verified
+  - launchforge_db database created in PostgreSQL
+  - .env created with DB credentials (gitignored)
+  - .gitignore configured
+  - Database connection module built (db/index.js) using pg Pool
+  - Database health check implemented (db/health.js)
+
+Module 5+: Backend Architecture [COMPLETE]
+  - Express 5 server with layered architecture (server.js)
+  - Controller / Service / Route separation pattern established
+  - Health check endpoint: GET /api/health
+  - Server startup with database health verification
+
+Authentication System [COMPLETE]
+  - User registration: POST /api/register (email + password, bcrypt hashing)
+  - User login: POST /api/login (returns JWT token with 1h expiry)
+  - Token verification: GET /api/me (returns authenticated user info)
+  - Input validation (email format, password length >= 6)
+  - Duplicate email detection (PostgreSQL unique constraint)
+  - JWT middleware for protected routes
+
+RBAC (Role-Based Access Control) [COMPLETE]
+  - authenticate middleware — verifies JWT Bearer token
+  - requireRole middleware — checks user role against required role
+  - Admin test route: GET /api/admin/test (admin-only)
+  - List all users: GET /api/admin/users (admin-only)
+  - Update user role: PUT /api/admin/users/:id/role (admin-only, validates allowed roles)
+  - Users table has a "role" column (defaults to 'user', can be 'admin')
+
+NOT YET BUILT:
+  - Redis integration in application code (installed but not connected)
+  - Frontend (React)
+  - Docker containerization
+  - AWS deployment
+  - CI/CD pipeline (GitHub Actions)
+  - AI/Intelligence layer
+  - Campaign, analytics, or orchestration features
+
+
+========================================
+5. REPOSITORY STRUCTURE (ACTUAL)
+========================================
+
+Main_Repo/
+  .env                              # DB credentials + JWT_SECRET (gitignored)
+  .gitignore                        # Excluded files list
+  package.json                      # Node.js dependencies
+  server.js                         # Express app entry point
+  CLAUDE.md                         # Claude Code operating rules
+  ARCHITECTURE.md                   # System architecture baseline
+  SERVICES.md                       # Service definitions
+  ENVIRONMENT.md                    # Environment configuration
+  README.md                         # Project overview
+  MODULE4.md                        # Module 4 progress tracker
+  main.py                           # Legacy Python entry point (unused)
+  LaunchForge_AI_Master_Reference.docx  # Original reference doc (outdated)
+  db/
+    index.js                        # PostgreSQL connection pool (pg)
+    health.js                       # Database health check query
+  middleware/
+    auth.js                         # JWT authenticate + requireRole middleware
+  controllers/
+    healthController.js             # Health endpoint controller
+    authController.js               # Register + Login controllers
+  services/
+    healthService.js                # Health status logic
+    authService.js                  # Register + Login business logic (bcrypt, JWT)
+  routes/
+    index.js                        # Route aggregator (health + auth)
+    health.js                       # GET /api/health
+    auth.js                         # POST /api/register, POST /api/login, GET /api/me
+  src/
+    api/
+      routes/
+        index.js                    # API route aggregator (admin)
+        adminRoutes.js              # Admin-only routes (RBAC protected)
+      controllers/
+        adminController.js          # Update user role logic
+  node_modules/                     # Dependencies (gitignored)
+
+
+========================================
+6. API ENDPOINTS (CURRENT)
+========================================
+
+Public:
+  GET  /                            Returns "Server is running"
+  GET  /api/health                  Returns { status: "ok" }
+  POST /api/register                Creates user (email, password) -> returns success message
+  POST /api/login                   Authenticates user -> returns JWT token
+
+Authenticated (requires Bearer token):
+  GET  /api/me                      Returns current user info from JWT
+
+Admin-only (requires Bearer token + admin role):
+  GET  /api/admin/test              Returns "Admin access granted"
+  GET  /api/admin/users             Returns list of all users (id, email, role)
+  PUT  /api/admin/users/:id/role    Updates a user's role (body: { role: "admin" | "user" })
+
+
+========================================
+7. DATABASE SCHEMA (CURRENT)
+========================================
+
+Table: users
+  id        — auto-generated primary key
+  email     — unique, required
+  password  — bcrypt hashed
+  role      — 'user' (default) or 'admin'
+
+
+========================================
+8. KEY DEPENDENCIES (package.json)
+========================================
+
+Production:
+  express       5.2.1     — Web framework
+  pg            8.20.0    — PostgreSQL client
+  dotenv        17.4.2    — Environment variable loader
+  bcrypt        6.0.0     — Password hashing
+  jsonwebtoken  9.0.3     — JWT creation and verification
+
+Development:
+  nodemon       3.1.14    — Auto-restart on file changes
+
+
+========================================
+9. ENVIRONMENT VARIABLES REQUIRED
+========================================
+
+DB_HOST       — PostgreSQL host (default: localhost)
+DB_PORT       — PostgreSQL port (default: 5432)
+DB_NAME       — Database name (launchforge_db)
+DB_USER       — Database user
+DB_PASSWORD   — Database password
+JWT_SECRET    — Secret key for JWT signing
+PORT          — Server port (default: 3000)
+
+
+========================================
+10. ARCHITECTURE PATTERN
+========================================
+
+The backend follows a layered architecture:
+
+  Request -> Route -> Controller -> Service -> Database
+
+  Routes:       Define URL paths and HTTP methods, attach middleware
+  Controllers:  Handle request/response, validate input, call services
+  Services:     Contain business logic, interact with database
+  Middleware:   Cross-cutting concerns (auth, role checks)
+  DB:           Connection pool module, health checks
+
+This separation keeps the codebase organized and testable as it grows.
+
+
+========================================
+11. WORKFLOW RULES
+========================================
+
+Every Claude Code / Claude Web Session:
+  Read the operating rules and follow them. One change at a time. Explain before changing. Wait for confirmation.
+
+Build Discipline:
+  - One change at a time — never batch multiple changes
+  - Concept before code — understand why before executing
+  - Evidence before moving forward — verify it works before the next step
+  - Never hardcode credentials — always use environment variables
+
+Git Workflow:
+  git add <files>         — stage specific files (never blindly add .env)
+  git commit -m 'message' — commit with a clear, descriptive message
+  git push origin main    — push to GitHub
+  git status              — see what has changed
+  git log --oneline       — see recent commits
+
+
+========================================
+12. WHAT COMES NEXT
+========================================
+
+Immediate priorities (still in Phase 1):
+  - Connect Redis (Memurai) to the application
+  - Verify Redis read/write from Express
+  - Set up Docker containerization
+  - Configure GitHub Actions CI/CD pipeline
+  - Prepare AWS deployment baseline
+
+Then Phase 2 (Core System):
+  - React frontend
+  - User dashboard
+  - Campaign management features
+  - Media management
+  - Full CRUD for core entities
+
+
+========================================
+END OF REFERENCE
+========================================
