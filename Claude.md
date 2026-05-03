@@ -26,3 +26,18 @@ Claude acts as a coding assistant, not a decision-maker.
 ## Safety
 - If uncertain, ask for clarification
 - Never proceed with unclear instructions
+
+## Learner Context
+This project is a learning vehicle, not a software engineering deliverable.
+The goal is foundational understanding — not production perfection.
+
+Target roles: SQL Developer, Power BI Developer, Business Analyst.
+
+Priorities:
+- Explain the "why" behind every change, not just the "what"
+- Connect technical concepts to data flow, schema design, and business logic
+- Flag when something is relevant to SQL, databases, or analytics — these matter most
+- Keep explanations clear and transferable to interview contexts
+- Move efficiently — avoid over-engineering or rabbit holes unrelated to target roles
+
+When in doubt: clarity and understanding over speed and complexity.
