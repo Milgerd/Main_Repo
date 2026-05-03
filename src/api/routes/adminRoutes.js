@@ -3,6 +3,7 @@ const router = express.Router();
 const { authenticate, requireRole } = require('../../../middleware/auth');
 const pool = require('../../../db');
 const { updateUserRole } = require('../controllers/adminController');
+const { getRoleAuditLog } = require('../controllers/auditController');
 
 router.get('/test', authenticate, requireRole('admin'), (req, res) => {
   res.json({ message: 'Admin access granted' });
@@ -23,5 +24,7 @@ router.put(
   requireRole('admin'),
   updateUserRole
 );
+
+router.get('/audit/roles', authenticate, requireRole('admin'), getRoleAuditLog);
 
 module.exports = router;

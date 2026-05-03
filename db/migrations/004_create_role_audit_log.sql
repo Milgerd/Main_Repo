@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS role_audit_log (
+  id SERIAL PRIMARY KEY,
+  admin_id INTEGER NOT NULL,
+  target_user_id INTEGER NOT NULL,
+  old_role VARCHAR NOT NULL,
+  new_role VARCHAR NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);

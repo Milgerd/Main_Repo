@@ -14,18 +14,37 @@ const updateUserRole = async (req, res) => {
     return res.status(400).json({ message: 'Invalid role' });
   }
 
-  const result = await pool.query('SELECT id, email, role FROM users WHERE id = $1', [userId]);
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
 
-  if (result.rows.length === 0) {
-    return res.status(404).json({ message: 'User not found' });
+    const result = await client.query('SELECT id, email, role FROM users WHERE id = $1', [userId]);
+
+    if (result.rows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const oldRole = result.rows[0].role;
+
+    const updatedUser = await client.query(
+      'UPDATE users SET role = $1 WHERE id = $2 RETURNING id, email, role',
+      [role, userId]
+    );
+
+    await client.query(
+      'INSERT INTO role_audit_log (admin_id, target_user_id, old_role, new_role) VALUES ($1, $2, $3, $4)',
+      [req.user.id, userId, oldRole, role]
+    );
+
+    await client.query('COMMIT');
+    return res.status(200).json(updatedUser.rows[0]);
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
   }
-
-  const updatedUser = await pool.query(
-    'UPDATE users SET role = $1 WHERE id = $2 RETURNING id, email, role',
-    [role, userId]
-  );
-
-  return res.status(200).json(updatedUser.rows[0]);
 };
 
 module.exports = {
