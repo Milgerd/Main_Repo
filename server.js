@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const express = require('express');
+const app = require('./app');
 const checkDatabaseHealth = require('./db/health');
 
 async function startApp() {
@@ -15,17 +15,6 @@ async function startApp() {
     }
 
     console.log("Database healthy:", isHealthy);
-
-    const app = express();
-    app.use(express.json());
-    const routes = require('./routes');
-    const apiRoutes = require('./src/api/routes');
-    app.use('/api', routes);
-    app.use('/api', apiRoutes);
-
-    app.get('/', (req, res) => {
-      res.send('Server is running');
-    });
 
     const PORT = process.env.PORT || 3000;
 
