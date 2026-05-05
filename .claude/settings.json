@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell($env:PGPASSWORD = \"Snod-donop-hnopg1\"; psql -U postgres -d launchforge_db -c \"UPDATE users SET role='admin' WHERE email='selfadmin@test.com'; DELETE FROM role_audit_log; SELECT id, email, role FROM users WHERE email IN \\('selfadmin@test.com','selfuser@test.com'\\);\")",
-      "PowerShell($env:PGPASSWORD = \"Snod-donop-hnopg1\"; psql -U postgres -d launchforge_db -c \"DELETE FROM role_audit_log; DELETE FROM users WHERE email IN \\('selfadmin@test.com','selfuser@test.com'\\);\")"
-    ]
-  }
-}
