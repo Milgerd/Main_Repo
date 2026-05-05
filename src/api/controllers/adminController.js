@@ -1,4 +1,5 @@
 const pool = require('../../../db');
+const { checkRoleChangeAnomalies } = require('../services/anomalyService');
 
 const updateUserRole = async (req, res) => {
   const userId = req.params.id;
@@ -50,7 +51,10 @@ const updateUserRole = async (req, res) => {
     );
 
     await client.query('COMMIT');
-    return res.status(200).json(updatedUser.rows[0]);
+
+    const anomalies = await checkRoleChangeAnomalies(req.user.id, userId);
+
+    return res.status(200).json({ ...updatedUser.rows[0], anomalies });
   } catch (error) {
     await client.query('ROLLBACK');
     throw error;
