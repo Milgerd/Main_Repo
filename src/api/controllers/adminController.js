@@ -14,6 +14,10 @@ const updateUserRole = async (req, res) => {
     return res.status(400).json({ message: 'Invalid role' });
   }
 
+  if (String(req.user.id) === String(userId)) {
+    return res.status(403).json({ message: 'Cannot modify your own role' });
+  }
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -26,6 +30,14 @@ const updateUserRole = async (req, res) => {
     }
 
     const oldRole = result.rows[0].role;
+
+    if (oldRole === 'admin' && role !== 'admin') {
+      const admins = await client.query("SELECT id FROM users WHERE role = 'admin' FOR UPDATE");
+      if (admins.rows.length === 1) {
+        await client.query('ROLLBACK');
+        return res.status(403).json({ message: 'Cannot remove the last admin' });
+      }
+    }
 
     const updatedUser = await client.query(
       'UPDATE users SET role = $1 WHERE id = $2 RETURNING id, email, role',
