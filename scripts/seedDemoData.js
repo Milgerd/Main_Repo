@@ -1,5 +1,10 @@
 require('dotenv').config();
 
+if (process.env.NODE_ENV === 'production') {
+  console.error('Seed script is disabled in production.');
+  process.exit(1);
+}
+
 const bcrypt = require('bcrypt');
 const pool = require('../db');
 
