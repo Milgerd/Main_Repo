@@ -12,7 +12,14 @@ const createProject = async (req, res) => {
     [req.user.id, name.trim(), description || null]
   );
 
-  res.status(201).json(result.rows[0]);
+  const project = result.rows[0];
+
+  await pool.query(
+    'INSERT INTO project_activity (user_id, project_id, event_type) VALUES ($1, $2, $3)',
+    [req.user.id, project.id, 'project_created']
+  );
+
+  res.status(201).json(project);
 };
 
 const listProjects = async (req, res) => {
@@ -37,6 +44,11 @@ const getProjectDashboard = async (req, res) => {
   const project = result.rows[0];
   const daysSinceCreated = Math.floor((Date.now() - new Date(project.created_at).getTime()) / (1000 * 60 * 60 * 24));
 
+  const activityResult = await pool.query(
+    'SELECT COUNT(*)::int AS total FROM project_activity WHERE project_id = $1',
+    [project.id]
+  );
+
   res.json({
     projectId: project.id,
     projectName: project.name,
@@ -44,7 +56,7 @@ const getProjectDashboard = async (req, res) => {
     daysSinceCreated,
     lastUpdated: project.updated_at,
     activitySummary: {
-      totalEvents: 0,
+      totalEvents: activityResult.rows[0].total,
     },
   });
 };
