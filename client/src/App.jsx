@@ -11,12 +11,37 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
+  const [projectDashboard, setProjectDashboard] = useState(null);
 
   useEffect(() => {
     if (token) {
       fetchProjects(token);
     }
   }, []);
+
+  useEffect(() => {
+    if (!selectedProject) {
+      setProjectDashboard(null);
+      return;
+    }
+
+    const fetchDashboard = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:3000/api/projects/${selectedProject.id}/dashboard`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setProjectDashboard(data);
+        }
+      } catch {
+        setProjectDashboard(null);
+      }
+    };
+
+    fetchDashboard();
+  }, [selectedProject]);
 
   const fetchProjects = async (authToken) => {
     try {
@@ -149,6 +174,13 @@ function App() {
           <p><strong>Description:</strong> {selectedProject.description || 'None'}</p>
           <p><strong>Status:</strong> {selectedProject.status}</p>
           <p><strong>Created:</strong> {new Date(selectedProject.created_at).toLocaleDateString()}</p>
+          {projectDashboard && (
+            <>
+              <p><strong>Days Since Created:</strong> {projectDashboard.daysSinceCreated}</p>
+              <p><strong>Last Updated:</strong> {new Date(projectDashboard.lastUpdated).toLocaleDateString()}</p>
+              <p><strong>Total Events:</strong> {projectDashboard.activitySummary.totalEvents}</p>
+            </>
+          )}
           <button onClick={() => setSelectedProject(null)}>Close</button>
         </div>
       )}

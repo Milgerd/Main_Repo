@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const bcrypt = require('bcrypt');
 const pool = require('../db');
 
 const DEMO_USERS = [
@@ -35,6 +36,19 @@ async function seed() {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
+
+    const testEmail = 'milad@launchforge.dev';
+    const testExists = await client.query('SELECT id FROM users WHERE email = $1', [testEmail]);
+    if (testExists.rows.length === 0) {
+      const hashedPassword = await bcrypt.hash('Test1234', 10);
+      await client.query(
+        "INSERT INTO users (email, password, role) VALUES ($1, $2, 'admin')",
+        [testEmail, hashedPassword]
+      );
+      console.log(`Test user created: ${testEmail}`);
+    } else {
+      console.log(`Test user exists: ${testEmail}`);
+    }
 
     const users = {};
     let createdCount = 0;
