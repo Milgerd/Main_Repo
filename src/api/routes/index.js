@@ -2,6 +2,7 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const router = express.Router();
 const adminRoutes = require('./adminRoutes');
+const projectRoutes = require('./projectRoutes');
 
 const adminLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -10,5 +11,6 @@ const adminLimiter = rateLimit({
 });
 
 router.use('/admin', adminLimiter, adminRoutes);
+router.use('/projects', projectRoutes);
 
 module.exports = router;
