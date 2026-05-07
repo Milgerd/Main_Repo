@@ -61,4 +61,30 @@ const getProjectDashboard = async (req, res) => {
   });
 };
 
-module.exports = { createProject, listProjects, getProjectDashboard };
+const ALLOWED_STATUSES = ['planning', 'active', 'completed'];
+
+const updateProjectStatus = async (req, res) => {
+  const { status } = req.body;
+
+  if (!status || !ALLOWED_STATUSES.includes(status)) {
+    return res.status(400).json({ error: `Status must be one of: ${ALLOWED_STATUSES.join(', ')}` });
+  }
+
+  const result = await pool.query(
+    'UPDATE projects SET status = $1, updated_at = NOW() WHERE id = $2 AND user_id = $3 RETURNING id, name, status, updated_at',
+    [status, req.params.id, req.user.id]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(404).json({ error: 'Project not found' });
+  }
+
+  await pool.query(
+    'INSERT INTO project_activity (user_id, project_id, event_type) VALUES ($1, $2, $3)',
+    [req.user.id, result.rows[0].id, 'status_changed']
+  );
+
+  res.json(result.rows[0]);
+};
+
+module.exports = { createProject, listProjects, getProjectDashboard, updateProjectStatus };
