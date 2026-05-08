@@ -49,6 +49,11 @@ const getProjectDashboard = async (req, res) => {
     [project.id]
   );
 
+  const recentResult = await pool.query(
+    'SELECT event_type, created_at FROM project_activity WHERE project_id = $1 ORDER BY created_at DESC LIMIT 5',
+    [project.id]
+  );
+
   res.json({
     projectId: project.id,
     projectName: project.name,
@@ -58,6 +63,7 @@ const getProjectDashboard = async (req, res) => {
     activitySummary: {
       totalEvents: activityResult.rows[0].total,
     },
+    recentActivity: recentResult.rows,
   });
 };
 

@@ -224,6 +224,18 @@ function App() {
               <p><strong>Days Since Created:</strong> {projectDashboard.daysSinceCreated}</p>
               <p><strong>Last Updated:</strong> {new Date(projectDashboard.lastUpdated).toLocaleDateString()}</p>
               <p><strong>Total Events:</strong> {projectDashboard.activitySummary.totalEvents}</p>
+              {projectDashboard.recentActivity.length > 0 && (
+                <>
+                  <h4>Recent Activity</h4>
+                  <ul>
+                    {projectDashboard.recentActivity.map((event, i) => (
+                      <li key={i}>
+                        {event.event_type} — {new Date(event.created_at).toLocaleString()}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </>
           )}
           <button onClick={() => setSelectedProject(null)}>Close</button>
