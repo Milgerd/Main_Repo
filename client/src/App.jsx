@@ -172,7 +172,40 @@ function App() {
         <div style={{ marginTop: '1rem', padding: '1rem', border: '1px solid #ccc' }}>
           <h3>{selectedProject.name}</h3>
           <p><strong>Description:</strong> {selectedProject.description || 'None'}</p>
-          <p><strong>Status:</strong> {selectedProject.status}</p>
+          <p>
+            <strong>Status:</strong>{' '}
+            <select
+              value={selectedProject.status}
+              onChange={async (e) => {
+                const newStatus = e.target.value;
+                try {
+                  const res = await fetch(
+                    `http://localhost:3000/api/projects/${selectedProject.id}/status`,
+                    {
+                      method: 'PATCH',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                      },
+                      body: JSON.stringify({ status: newStatus }),
+                    }
+                  );
+                  if (res.ok) {
+                    const updated = await res.json();
+                    const merged = { ...selectedProject, status: updated.status, updated_at: updated.updated_at };
+                    setSelectedProject(merged);
+                    setProjects((prev) => prev.map((p) => (p.id === merged.id ? { ...p, status: merged.status, updated_at: merged.updated_at } : p)));
+                  }
+                } catch {
+                  setError('Could not update status');
+                }
+              }}
+            >
+              <option value="planning">planning</option>
+              <option value="active">active</option>
+              <option value="completed">completed</option>
+            </select>
+          </p>
           <p><strong>Created:</strong> {new Date(selectedProject.created_at).toLocaleDateString()}</p>
           {projectDashboard && (
             <>
