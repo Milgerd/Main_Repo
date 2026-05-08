@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 
 function App() {
+  const formatEventType = (type) => {
+    const labels = { project_created: 'Project created', status_changed: 'Status changed' };
+    return labels[type] || type.replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -230,7 +235,7 @@ function App() {
                   <ul>
                     {projectDashboard.recentActivity.map((event, i) => (
                       <li key={i}>
-                        {event.event_type} — {new Date(event.created_at).toLocaleString()}
+                        {formatEventType(event.event_type)} — {new Date(event.created_at).toLocaleString()}
                       </li>
                     ))}
                   </ul>
