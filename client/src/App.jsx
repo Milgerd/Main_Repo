@@ -12,6 +12,8 @@ function App() {
   const [projectName, setProjectName] = useState('');
   const [projectDescription, setProjectDescription] = useState('');
   const [projectDashboard, setProjectDashboard] = useState(null);
+  const [dashboardLoading, setDashboardLoading] = useState(false);
+  const [dashboardError, setDashboardError] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -22,10 +24,14 @@ function App() {
   useEffect(() => {
     if (!selectedProject) {
       setProjectDashboard(null);
+      setDashboardLoading(false);
+      setDashboardError(null);
       return;
     }
 
     const fetchDashboard = async () => {
+      setDashboardLoading(true);
+      setDashboardError(null);
       try {
         const res = await fetch(
           `http://localhost:3000/api/projects/${selectedProject.id}/dashboard`,
@@ -34,10 +40,14 @@ function App() {
         if (res.ok) {
           const data = await res.json();
           setProjectDashboard(data);
+        } else {
+          setDashboardError('Failed to load dashboard');
         }
       } catch {
         setProjectDashboard(null);
+        setDashboardError('Could not connect to server');
       }
+      setDashboardLoading(false);
     };
 
     fetchDashboard();
@@ -207,7 +217,9 @@ function App() {
             </select>
           </p>
           <p><strong>Created:</strong> {new Date(selectedProject.created_at).toLocaleDateString()}</p>
-          {projectDashboard && (
+          {dashboardLoading && <p>Loading dashboard...</p>}
+          {dashboardError && <p style={{ color: 'red' }}>{dashboardError}</p>}
+          {!dashboardLoading && !dashboardError && projectDashboard && (
             <>
               <p><strong>Days Since Created:</strong> {projectDashboard.daysSinceCreated}</p>
               <p><strong>Last Updated:</strong> {new Date(projectDashboard.lastUpdated).toLocaleDateString()}</p>
