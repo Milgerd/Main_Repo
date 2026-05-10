@@ -1,0 +1,9 @@
+.git
+node_modules
+client
+.claude
+.env
+.env.*
+.github
+__tests__
+*.test.js
