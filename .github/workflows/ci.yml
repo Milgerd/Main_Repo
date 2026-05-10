@@ -25,6 +25,9 @@ jobs:
           --health-timeout 3s
           --health-retries 10
 
+    # Test-only credentials for the ephemeral PostgreSQL CI service.
+    # These are not production secrets.
+    # Production/deployment secrets must use GitHub Actions Secrets.
     env:
       DB_HOST: localhost
       DB_PORT: 5432
