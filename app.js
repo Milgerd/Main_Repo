@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require('helmet');
 const cors = require('cors');
 
 const corsOrigin = process.env.CORS_ORIGIN || (
@@ -8,6 +9,7 @@ const corsOrigin = process.env.CORS_ORIGIN || (
 );
 
 const app = express();
+app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({ origin: corsOrigin }));
 app.use(express.json());
 
