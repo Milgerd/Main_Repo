@@ -93,4 +93,66 @@ const updateProjectStatus = async (req, res) => {
   res.json(result.rows[0]);
 };
 
-module.exports = { createProject, listProjects, getProjectDashboard, updateProjectStatus };
+const updateProject = async (req, res) => {
+  const { name, description } = req.body;
+
+  if (name !== undefined && (typeof name !== 'string' || name.trim().length === 0)) {
+    return res.status(400).json({ error: 'Project name cannot be empty' });
+  }
+
+  if (name === undefined && description === undefined) {
+    return res.status(400).json({ error: 'No fields to update' });
+  }
+
+  const fields = [];
+  const values = [];
+  let paramIndex = 1;
+
+  if (name !== undefined) {
+    fields.push(`name = $${paramIndex++}`);
+    values.push(name.trim());
+  }
+  if (description !== undefined) {
+    fields.push(`description = $${paramIndex++}`);
+    values.push(description);
+  }
+
+  fields.push('updated_at = NOW()');
+
+  const result = await pool.query(
+    `UPDATE projects SET ${fields.join(', ')} WHERE id = $${paramIndex} AND user_id = $${paramIndex + 1} RETURNING id, name, description, status, created_at, updated_at`,
+    [...values, req.params.id, req.user.id]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(404).json({ error: 'Project not found' });
+  }
+
+  await pool.query(
+    'INSERT INTO project_activity (user_id, project_id, event_type) VALUES ($1, $2, $3)',
+    [req.user.id, result.rows[0].id, 'project_updated']
+  );
+
+  res.json(result.rows[0]);
+};
+
+const deleteProject = async (req, res) => {
+  const result = await pool.query(
+    'SELECT id FROM projects WHERE id = $1 AND user_id = $2',
+    [req.params.id, req.user.id]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(404).json({ error: 'Project not found' });
+  }
+
+  const projectId = result.rows[0].id;
+
+  await pool.query('DELETE FROM tasks WHERE project_id = $1', [projectId]);
+  await pool.query('DELETE FROM project_activity WHERE project_id = $1', [projectId]);
+  await pool.query('DELETE FROM projects WHERE id = $1', [projectId]);
+
+  res.json({ message: 'Project deleted' });
+};
+
+module.exports = { createProject, listProjects, getProjectDashboard, updateProjectStatus, updateProject, deleteProject };
