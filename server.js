@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const app = require('./app');
 const checkDatabaseHealth = require('./db/health');
+const { connectRedis } = require('./db/redis');
 
 async function startApp() {
   console.log("Starting application...");
@@ -15,6 +16,8 @@ async function startApp() {
     }
 
     console.log("Database healthy:", isHealthy);
+
+    await connectRedis();
 
     const PORT = process.env.PORT || 3000;
 
