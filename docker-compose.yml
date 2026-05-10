@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: launchforge_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: launchforge_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: docker-dev-secret
+      REDIS_HOST: ""
+      REDIS_PORT: ""
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
