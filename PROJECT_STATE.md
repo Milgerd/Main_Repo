@@ -54,6 +54,18 @@ LaunchForge AI is a full-stack project management platform built as a portfolio 
 - Admin page: users table, role updates, audit log, analytics
 - ESLint configured and passing clean
 
+**Phase 4 — Deployment Hardening**
+- Environment variable template (.env.example) for backend and frontend
+- Dockerfile hardened with ENV NODE_ENV=production
+- CORS fail-fast guard: server refuses to start in production without CORS_ORIGIN
+- Health endpoint upgraded to verify PostgreSQL and Redis connectivity (200/503 with component breakdown)
+- Rate limiting expanded: auth routes (20 req/15min), API routes (100 req/min), admin routes (10 req/min)
+- Helmet security headers (X-Content-Type-Options, X-Frame-Options, HSTS, Referrer-Policy; CSP disabled)
+- CI pipeline extended with frontend build validation (npm ci + vite build)
+- SQL migrations made idempotent (IF NOT EXISTS guards on constraints, columns, indexes)
+- CI test credentials documented as non-production scope
+- Secret audit confirmed: no production secrets in git history
+
 ## 4. Current Backend API Surface
 
 **AUTH**
@@ -145,9 +157,19 @@ LaunchForge AI is a full-stack project management platform built as a portfolio 
 - Frontend builds successfully (tsc + vite build)
 - ESLint configured with flat config, passes clean (0 errors, 0 warnings)
 - GitHub repository synced
-- Backend deployed baseline on AWS Elastic Beanstalk exists from Phase 1/2
 - client/dist excluded from git tracking
+- Dockerfile production-ready (NODE_ENV=production, npm ci --omit=dev)
+- CI pipeline validates backend tests, frontend build, and Docker image build
+- Helmet security headers active on all API responses
+- Three-tier rate limiting enforced (admin, auth, API)
+- Health endpoint reports per-component status (database, Redis)
+- CORS guarded against misconfigured production deploys
+- All SQL migrations idempotent and safe to re-run
 
 ## 10. Next Planned Phase
 
-**Phase 4** — placeholder for upcoming work. Scope not yet defined. Potential areas: global dashboard, task pagination, refresh tokens, profile management, deployment of frontend, end-to-end testing.
+**Phase 5 — Operational Maturity & Deployment**
+- Structured logging (Pino or Winston) to replace console.log
+- Deployment platform configuration (Render, Railway, or Fly.io)
+- Migration runner for automated schema management in CI and production
+- Optional: deployment automation via CI/CD pipeline
