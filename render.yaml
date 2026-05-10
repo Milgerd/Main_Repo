@@ -13,7 +13,6 @@ services:
   - type: web
     name: launchforge-api
     runtime: docker
-    plan: starter
     healthCheckPath: /api/health
     envVars:
       - key: PORT
@@ -58,7 +57,6 @@ services:
   - type: web
     name: launchforge-frontend
     runtime: static
-    plan: starter
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     rootDir: client
