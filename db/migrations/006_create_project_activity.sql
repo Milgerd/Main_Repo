@@ -6,4 +6,4 @@ CREATE TABLE IF NOT EXISTS project_activity (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_project_activity_project_id ON project_activity(project_id);
+CREATE INDEX IF NOT EXISTS idx_project_activity_project_id ON project_activity(project_id);

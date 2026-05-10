@@ -10,4 +10,4 @@ CREATE TABLE IF NOT EXISTS tasks (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_tasks_project_id ON tasks(project_id);
+CREATE INDEX IF NOT EXISTS idx_tasks_project_id ON tasks(project_id);
