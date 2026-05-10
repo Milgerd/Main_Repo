@@ -50,7 +50,7 @@ const getProjectDashboard = async (req, res) => {
   );
 
   const recentResult = await pool.query(
-    'SELECT event_type, created_at FROM project_activity WHERE project_id = $1 ORDER BY created_at DESC LIMIT 5',
+    'SELECT event_type, created_at FROM project_activity WHERE project_id = $1 ORDER BY created_at DESC LIMIT 50',
     [project.id]
   );
 
