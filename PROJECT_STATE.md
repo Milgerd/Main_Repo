@@ -165,11 +165,15 @@ LaunchForge AI is a full-stack project management platform built as a portfolio 
 - Health endpoint reports per-component status (database, Redis)
 - CORS guarded against misconfigured production deploys
 - All SQL migrations idempotent and safe to re-run
+- Render blueprint (render.yaml) committed and validated
+- Blueprint detects four resources: backend (Docker), frontend (static), PostgreSQL, Key Value/Redis
+- Live deployment intentionally skipped to avoid hosting costs
+- render.yaml serves as deployment-ready portfolio evidence
 
 ## 10. Next Planned Phase
 
-**Phase 5 — Operational Maturity & Deployment**
+**Phase 5 — Operational Maturity (continued)**
 - Structured logging (Pino or Winston) to replace console.log
-- Deployment platform configuration (Render, Railway, or Fly.io)
 - Migration runner for automated schema management in CI and production
+- Portfolio README with architecture diagram, screenshots, and API documentation
 - Optional: deployment automation via CI/CD pipeline
