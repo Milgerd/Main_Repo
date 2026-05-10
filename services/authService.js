@@ -41,5 +41,23 @@ async function loginUser(email, password) {
   return { message: 'Login successful', token, user: { id: user.id, email: user.email, role: user.role } };
 }
 
-module.exports = { registerUser, loginUser };
+async function changePassword(userId, currentPassword, newPassword) {
+  const { rows } = await pool.query('SELECT id, password FROM users WHERE id = $1', [userId]);
+
+  if (rows.length === 0) {
+    return { error: 'User not found' };
+  }
+
+  const match = await bcrypt.compare(currentPassword, rows[0].password);
+  if (!match) {
+    return { error: 'Current password is incorrect' };
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
+  await pool.query('UPDATE users SET password = $1 WHERE id = $2', [hashedPassword, userId]);
+
+  return { message: 'Password changed successfully' };
+}
+
+module.exports = { registerUser, loginUser, changePassword };
  

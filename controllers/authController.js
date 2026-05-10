@@ -1,4 +1,4 @@
-const { registerUser, loginUser } = require('../services/authService');
+const { registerUser, loginUser, changePassword } = require('../services/authService');
 
 async function register(req, res) {
   const { email, password } = req.body;
@@ -45,4 +45,30 @@ async function login(req, res) {
   }
 }
 
-module.exports = { register, login };
+async function changePasswordHandler(req, res) {
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword) {
+    return res.status(400).json({ error: 'Current password is required' });
+  }
+
+  if (!newPassword) {
+    return res.status(400).json({ error: 'New password is required' });
+  }
+
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: 'New password must be at least 6 characters long' });
+  }
+
+  try {
+    const result = await changePassword(req.user.id, currentPassword, newPassword);
+    if (result.error) {
+      return res.status(401).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    return res.status(500).json({ error: 'Failed to change password' });
+  }
+}
+
+module.exports = { register, login, changePasswordHandler };
