@@ -42,16 +42,28 @@ const createTask = async (req, res) => {
 
 const listTasks = async (req, res) => {
   const projectId = req.params.id;
+  const { status } = req.query;
+
+  if (status && !ALLOWED_STATUSES.includes(status)) {
+    return res.status(400).json({ error: `Status must be one of: ${ALLOWED_STATUSES.join(', ')}` });
+  }
 
   const ownsProject = await verifyProjectOwnership(projectId, req.user.id);
   if (!ownsProject) {
     return res.status(404).json({ error: 'Project not found' });
   }
 
-  const result = await pool.query(
-    'SELECT id, title, description, status, due_date, created_at, updated_at FROM tasks WHERE project_id = $1 ORDER BY created_at DESC',
-    [projectId]
-  );
+  let query = 'SELECT id, title, description, status, due_date, created_at, updated_at FROM tasks WHERE project_id = $1';
+  const params = [projectId];
+
+  if (status) {
+    query += ' AND status = $2';
+    params.push(status);
+  }
+
+  query += ' ORDER BY created_at DESC';
+
+  const result = await pool.query(query, params);
 
   res.json(result.rows);
 };
