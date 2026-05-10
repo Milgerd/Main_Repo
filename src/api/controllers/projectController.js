@@ -31,6 +31,19 @@ const listProjects = async (req, res) => {
   res.json(result.rows);
 };
 
+const getProject = async (req, res) => {
+  const result = await pool.query(
+    'SELECT id, name, description, status, created_at, updated_at FROM projects WHERE id = $1 AND user_id = $2',
+    [req.params.id, req.user.id]
+  );
+
+  if (result.rows.length === 0) {
+    return res.status(404).json({ error: 'Project not found' });
+  }
+
+  res.json(result.rows[0]);
+};
+
 const getProjectDashboard = async (req, res) => {
   const result = await pool.query(
     'SELECT id, name, status, created_at, updated_at FROM projects WHERE id = $1 AND user_id = $2',
@@ -155,4 +168,4 @@ const deleteProject = async (req, res) => {
   res.json({ message: 'Project deleted' });
 };
 
-module.exports = { createProject, listProjects, getProjectDashboard, updateProjectStatus, updateProject, deleteProject };
+module.exports = { createProject, listProjects, getProject, getProjectDashboard, updateProjectStatus, updateProject, deleteProject };
