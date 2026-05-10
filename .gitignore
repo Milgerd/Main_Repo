@@ -4,6 +4,7 @@ __pycache__
 *.pyc
 00 - Milad.md
 node_modules/
+client/dist/
 .env.*
 !.env.example
 .claude/
