@@ -99,5 +99,13 @@ jobs:
       - name: Run tests
         run: npm test -- --runInBand --passWithNoTests
 
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: client
+
+      - name: Build frontend
+        run: npm run build
+        working-directory: client
+
       - name: Build Docker image
         run: docker build -t launchforge-backend .
