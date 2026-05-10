@@ -11,8 +11,14 @@ const adminLimiter = rateLimit({
   message: { message: 'Too many requests, please try again later' },
 });
 
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 100,
+  message: { message: 'Too many requests, please try again later' },
+});
+
 router.use('/admin', adminLimiter, adminRoutes);
-router.use('/projects', projectRoutes);
-router.use('/', taskRoutes);
+router.use('/projects', apiLimiter, projectRoutes);
+router.use('/', apiLimiter, taskRoutes);
 
 module.exports = router;
