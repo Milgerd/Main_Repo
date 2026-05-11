@@ -11,6 +11,28 @@ Full-stack project management platform demonstrating end-to-end development: RES
 - **Security Hardening** — Helmet headers, three-tier rate limiting, CORS production guard, and environment validation
 - **Deployment Ready** — Dockerized backend, Render blueprint, GitHub Actions CI/CD, and idempotent migrations
 
+## Screenshots
+
+**Dashboard** — Authenticated admin view with role badge and quick navigation
+
+![Dashboard](README-assets/screenshot-dashboard.jpg)
+
+**Projects** — Project listing with status badges and create form
+
+![Projects](README-assets/screenshot-projects-list.jpg)
+
+**Project Detail** — Tasks with mixed statuses, due dates, and activity feed
+
+![Project Detail](README-assets/screenshot-project-detail.jpg)
+
+**Admin Panel** — User management with role-based access control
+
+![Admin Panel](README-assets/screenshot-admin-panel.jpg)
+
+**Audit Log** — Role change history with admin attribution and timestamps
+
+![Audit Log](README-assets/screenshot-audit-log.jpg)
+
 ## Architecture Overview
 
 ```

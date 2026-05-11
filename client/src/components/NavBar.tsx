@@ -12,18 +12,28 @@ export default function NavBar() {
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `text-sm ${isActive ? 'text-blue-600 font-medium' : 'text-gray-600 hover:text-gray-900'}`;
+    `px-3 py-1.5 rounded-md text-sm font-medium transition ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`;
 
   return (
-    <nav className="flex items-center justify-between px-4 py-3 bg-white border-b">
-      <div className="flex items-center gap-4">
-        <span className="font-bold text-lg">LaunchForge</span>
-        <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
-        <NavLink to="/projects" className={linkClass}>Projects</NavLink>
-        <NavLink to="/account" className={linkClass}>Account</NavLink>
-        {user?.role === 'admin' && <NavLink to="/admin" className={linkClass}>Admin</NavLink>}
+    <nav className="flex items-center justify-between px-6 py-3.5 bg-white border-b shadow-sm">
+      <div className="flex items-center gap-6">
+        <NavLink to="/dashboard" className="text-xl font-bold text-indigo-600 tracking-tight">
+          LaunchForge
+        </NavLink>
+        <div className="flex items-center gap-1">
+          <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
+          <NavLink to="/projects" className={linkClass}>Projects</NavLink>
+          <NavLink to="/account" className={linkClass}>Account</NavLink>
+          {user?.role === 'admin' && (
+            <NavLink to="/admin" className={({ isActive }) =>
+              `px-3 py-1.5 rounded-md text-sm font-medium transition ${isActive ? 'bg-purple-50 text-purple-700' : 'text-purple-600 hover:bg-purple-50 hover:text-purple-700'}`
+            }>Admin</NavLink>
+          )}
+        </div>
       </div>
-      <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-700">Logout</button>
+      <button onClick={handleLogout} className="px-4 py-1.5 rounded-md text-sm font-medium border border-gray-300 text-gray-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition">
+        Logout
+      </button>
     </nav>
   );
 }

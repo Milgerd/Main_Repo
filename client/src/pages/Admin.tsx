@@ -75,76 +75,51 @@ export default function Admin() {
     },
   });
 
+  const roleBadge = (role: string) => (
+    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
+      {role}
+    </span>
+  );
+
   return (
-    <div className="p-4 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Admin — Users</h1>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
+      <h1 className="text-2xl font-bold">Admin Panel</h1>
 
-      {roleError && <p className="text-sm text-red-600 mb-3">{roleError}</p>}
+      {roleError && <p className="text-sm text-red-600">{roleError}</p>}
 
-      {isLoading && <p className="text-sm text-gray-500">Loading users...</p>}
-
-      {error && <p className="text-sm text-red-600">Failed to load users.</p>}
-
-      {!isLoading && !error && users?.length === 0 && (
-        <p className="text-sm text-gray-500">No users found.</p>
-      )}
-
-      {users && users.length > 0 && (
-        <table className="w-full text-sm border">
-          <thead>
-            <tr className="bg-gray-50 text-left">
-              <th className="px-3 py-2 border-b">ID</th>
-              <th className="px-3 py-2 border-b">Email</th>
-              <th className="px-3 py-2 border-b">Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((u) => (
-              <tr key={u.id} className="hover:bg-gray-50">
-                <td className="px-3 py-2 border-b text-gray-500">{u.id}</td>
-                <td className="px-3 py-2 border-b">{u.email}</td>
-                <td className="px-3 py-2 border-b">
-                  <select
-                    value={u.role}
-                    disabled={updatingId === u.id && roleUpdate.isPending}
-                    onChange={(e) => roleUpdate.mutate({ userId: u.id, role: e.target.value })}
-                    className="text-xs border rounded px-2 py-0.5 disabled:opacity-50"
-                  >
-                    <option value="user">user</option>
-                    <option value="admin">admin</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-3">Role Change Audit</h2>
-        {auditLoading && <p className="text-sm text-gray-500">Loading audit log...</p>}
-        {auditError && <p className="text-sm text-red-600">Failed to load audit log.</p>}
-        {!auditLoading && !auditError && audit?.length === 0 && (
-          <p className="text-sm text-gray-500">No role changes recorded.</p>
-        )}
-        {audit && audit.length > 0 && (
-          <table className="w-full text-sm border">
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b">
+          <h2 className="text-lg font-semibold">Users {users && <span className="text-sm font-normal text-gray-400">({users.length})</span>}</h2>
+        </div>
+        {isLoading && <p className="text-sm text-gray-500 px-6 py-4">Loading users...</p>}
+        {error && <p className="text-sm text-red-600 px-6 py-4">Failed to load users.</p>}
+        {users && users.length > 0 && (
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="px-3 py-2 border-b">Admin ID</th>
-                <th className="px-3 py-2 border-b">Target User ID</th>
-                <th className="px-3 py-2 border-b">Change</th>
-                <th className="px-3 py-2 border-b">Date</th>
+              <tr className="text-left text-xs text-gray-500 uppercase tracking-wide">
+                <th className="px-6 py-3 font-medium">ID</th>
+                <th className="px-6 py-3 font-medium">Email</th>
+                <th className="px-6 py-3 font-medium">Role</th>
+                <th className="px-6 py-3 font-medium">Action</th>
               </tr>
             </thead>
-            <tbody>
-              {audit.map((entry, i) => (
-                <tr key={i} className="hover:bg-gray-50">
-                  <td className="px-3 py-2 border-b text-gray-500">{entry.admin_id}</td>
-                  <td className="px-3 py-2 border-b text-gray-500">{entry.target_user_id}</td>
-                  <td className="px-3 py-2 border-b">
-                    <span className="text-xs">{entry.old_role} → {entry.new_role}</span>
+            <tbody className="divide-y divide-gray-100">
+              {users.map((u) => (
+                <tr key={u.id} className="hover:bg-gray-50 transition">
+                  <td className="px-6 py-3 text-gray-400">{u.id}</td>
+                  <td className="px-6 py-3 font-medium text-gray-900">{u.email}</td>
+                  <td className="px-6 py-3">{roleBadge(u.role)}</td>
+                  <td className="px-6 py-3">
+                    <select
+                      value={u.role}
+                      disabled={updatingId === u.id && roleUpdate.isPending}
+                      onChange={(e) => roleUpdate.mutate({ userId: u.id, role: e.target.value })}
+                      className="text-xs border border-gray-300 rounded-md px-2 py-1 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    >
+                      <option value="user">user</option>
+                      <option value="admin">admin</option>
+                    </select>
                   </td>
-                  <td className="px-3 py-2 border-b text-xs text-gray-400">{new Date(entry.created_at).toLocaleString()}</td>
                 </tr>
               ))}
             </tbody>
@@ -152,28 +127,63 @@ export default function Admin() {
         )}
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-3">Most Active Admins</h2>
-        {analyticsLoading && <p className="text-sm text-gray-500">Loading analytics...</p>}
-        {analyticsError && <p className="text-sm text-red-600">Failed to load analytics.</p>}
-        {!analyticsLoading && !analyticsError && activeAdmins?.length === 0 && (
-          <p className="text-sm text-gray-500">No admin activity recorded.</p>
-        )}
-        {activeAdmins && activeAdmins.length > 0 && (
-          <table className="w-full text-sm border">
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b">
+          <h2 className="text-lg font-semibold">Role Change Audit {audit && <span className="text-sm font-normal text-gray-400">({audit.length})</span>}</h2>
+        </div>
+        {auditLoading && <p className="text-sm text-gray-500 px-6 py-4">Loading audit log...</p>}
+        {auditError && <p className="text-sm text-red-600 px-6 py-4">Failed to load audit log.</p>}
+        {audit && audit.length > 0 && (
+          <table className="w-full text-sm">
             <thead>
-              <tr className="bg-gray-50 text-left">
-                <th className="px-3 py-2 border-b">Admin ID</th>
-                <th className="px-3 py-2 border-b">Email</th>
-                <th className="px-3 py-2 border-b">Total Changes</th>
+              <tr className="text-left text-xs text-gray-500 uppercase tracking-wide">
+                <th className="px-6 py-3 font-medium">Admin ID</th>
+                <th className="px-6 py-3 font-medium">Target User</th>
+                <th className="px-6 py-3 font-medium">Change</th>
+                <th className="px-6 py-3 font-medium">Date</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-gray-100">
+              {audit.map((entry, i) => (
+                <tr key={i} className="hover:bg-gray-50 transition">
+                  <td className="px-6 py-3 text-gray-400">{entry.admin_id}</td>
+                  <td className="px-6 py-3 text-gray-400">{entry.target_user_id}</td>
+                  <td className="px-6 py-3">
+                    {roleBadge(entry.old_role)}
+                    <span className="mx-2 text-gray-400">→</span>
+                    {roleBadge(entry.new_role)}
+                  </td>
+                  <td className="px-6 py-3 text-xs text-gray-400">{new Date(entry.created_at).toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b">
+          <h2 className="text-lg font-semibold">Most Active Admins {activeAdmins && <span className="text-sm font-normal text-gray-400">({activeAdmins.length})</span>}</h2>
+        </div>
+        {analyticsLoading && <p className="text-sm text-gray-500 px-6 py-4">Loading analytics...</p>}
+        {analyticsError && <p className="text-sm text-red-600 px-6 py-4">Failed to load analytics.</p>}
+        {activeAdmins && activeAdmins.length > 0 && (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-left text-xs text-gray-500 uppercase tracking-wide">
+                <th className="px-6 py-3 font-medium">Admin ID</th>
+                <th className="px-6 py-3 font-medium">Email</th>
+                <th className="px-6 py-3 font-medium">Total Changes</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
               {activeAdmins.map((a) => (
-                <tr key={a.admin_id} className="hover:bg-gray-50">
-                  <td className="px-3 py-2 border-b text-gray-500">{a.admin_id}</td>
-                  <td className="px-3 py-2 border-b">{a.email}</td>
-                  <td className="px-3 py-2 border-b">{a.total_changes}</td>
+                <tr key={a.admin_id} className="hover:bg-gray-50 transition">
+                  <td className="px-6 py-3 text-gray-400">{a.admin_id}</td>
+                  <td className="px-6 py-3 font-medium text-gray-900">{a.email}</td>
+                  <td className="px-6 py-3">
+                    <span className="inline-block bg-gray-100 text-gray-700 px-2.5 py-0.5 rounded-full text-xs font-medium">{a.total_changes}</span>
+                  </td>
                 </tr>
               ))}
             </tbody>
