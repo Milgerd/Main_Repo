@@ -4,6 +4,7 @@ const router = express.Router();
 const adminRoutes = require('./adminRoutes');
 const projectRoutes = require('./projectRoutes');
 const taskRoutes = require('./taskRoutes');
+const aiRoutes = require('./aiRoutes');
 
 const adminLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -20,5 +21,6 @@ const apiLimiter = rateLimit({
 router.use('/admin', adminLimiter, adminRoutes);
 router.use('/projects', apiLimiter, projectRoutes);
 router.use('/', apiLimiter, taskRoutes);
+router.use('/ai', apiLimiter, aiRoutes);
 
 module.exports = router;
