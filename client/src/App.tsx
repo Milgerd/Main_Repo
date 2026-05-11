@@ -9,6 +9,8 @@ import Projects from './pages/Projects';
 import ProjectDetail from './pages/ProjectDetail';
 import Account from './pages/Account';
 import Admin from './pages/Admin';
+import Analytics from './pages/Analytics';
+import AIGenerate from './pages/AIGenerate';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -23,6 +25,8 @@ export default function App() {
         <Route path="/projects/:id" element={<ProjectDetail />} />
         <Route path="/account" element={<Account />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/analytics" element={<Analytics />} />
+        <Route path="/ai" element={<AIGenerate />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

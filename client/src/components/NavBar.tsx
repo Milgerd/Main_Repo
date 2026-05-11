@@ -23,6 +23,8 @@ export default function NavBar() {
         <div className="flex items-center gap-1">
           <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
           <NavLink to="/projects" className={linkClass}>Projects</NavLink>
+          <NavLink to="/analytics" className={linkClass}>Analytics</NavLink>
+          <NavLink to="/ai" className={linkClass}>AI Generate</NavLink>
           <NavLink to="/account" className={linkClass}>Account</NavLink>
           {user?.role === 'admin' && (
             <NavLink to="/admin" className={({ isActive }) =>
