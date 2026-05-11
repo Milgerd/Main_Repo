@@ -5,6 +5,7 @@ const adminRoutes = require('./adminRoutes');
 const projectRoutes = require('./projectRoutes');
 const taskRoutes = require('./taskRoutes');
 const aiRoutes = require('./aiRoutes');
+const analyticsRoutes = require('./analyticsRoutes');
 
 const adminLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -22,5 +23,6 @@ router.use('/admin', adminLimiter, adminRoutes);
 router.use('/projects', apiLimiter, projectRoutes);
 router.use('/', apiLimiter, taskRoutes);
 router.use('/ai', apiLimiter, aiRoutes);
+router.use('/analytics', apiLimiter, analyticsRoutes);
 
 module.exports = router;
