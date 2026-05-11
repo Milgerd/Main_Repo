@@ -87,7 +87,7 @@ export default function Admin() {
 
       {roleError && <p className="text-sm text-red-600">{roleError}</p>}
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200">
         <div className="px-6 py-4 border-b">
           <h2 className="text-lg font-semibold">Users {users && <span className="text-sm font-normal text-gray-400">({users.length})</span>}</h2>
         </div>
@@ -105,7 +105,7 @@ export default function Admin() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {users.map((u) => (
-                <tr key={u.id} className="hover:bg-gray-50 transition">
+                <tr key={u.id} className="hover:bg-gray-50 transition-all duration-200">
                   <td className="px-6 py-3 text-gray-400">{u.id}</td>
                   <td className="px-6 py-3 font-medium text-gray-900">{u.email}</td>
                   <td className="px-6 py-3">{roleBadge(u.role)}</td>
@@ -114,7 +114,7 @@ export default function Admin() {
                       value={u.role}
                       disabled={updatingId === u.id && roleUpdate.isPending}
                       onChange={(e) => roleUpdate.mutate({ userId: u.id, role: e.target.value })}
-                      className="text-xs border border-gray-300 rounded-md px-2 py-1 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                      className="text-xs border border-gray-300 rounded-lg px-2 py-1 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
                       <option value="user">user</option>
                       <option value="admin">admin</option>
@@ -127,7 +127,7 @@ export default function Admin() {
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200">
         <div className="px-6 py-4 border-b">
           <h2 className="text-lg font-semibold">Role Change Audit {audit && <span className="text-sm font-normal text-gray-400">({audit.length})</span>}</h2>
         </div>
@@ -145,7 +145,7 @@ export default function Admin() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {audit.map((entry, i) => (
-                <tr key={i} className="hover:bg-gray-50 transition">
+                <tr key={i} className="hover:bg-gray-50 transition-all duration-200">
                   <td className="px-6 py-3 text-gray-400">{entry.admin_id}</td>
                   <td className="px-6 py-3 text-gray-400">{entry.target_user_id}</td>
                   <td className="px-6 py-3">
@@ -161,7 +161,7 @@ export default function Admin() {
         )}
       </div>
 
-      <div className="bg-white rounded-lg shadow">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200">
         <div className="px-6 py-4 border-b">
           <h2 className="text-lg font-semibold">Most Active Admins {activeAdmins && <span className="text-sm font-normal text-gray-400">({activeAdmins.length})</span>}</h2>
         </div>
@@ -178,7 +178,7 @@ export default function Admin() {
             </thead>
             <tbody className="divide-y divide-gray-100">
               {activeAdmins.map((a) => (
-                <tr key={a.admin_id} className="hover:bg-gray-50 transition">
+                <tr key={a.admin_id} className="hover:bg-gray-50 transition-all duration-200">
                   <td className="px-6 py-3 text-gray-400">{a.admin_id}</td>
                   <td className="px-6 py-3 font-medium text-gray-900">{a.email}</td>
                   <td className="px-6 py-3">

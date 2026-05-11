@@ -243,7 +243,7 @@ export default function ProjectDetail() {
       {error && <p className="mt-4 text-sm text-red-600">Project not found.</p>}
 
       {project && !editing && (
-        <div className="mt-4 border rounded p-4">
+        <div className="mt-4 bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold">{project.name}</h1>
             <div className="flex items-center gap-2">
@@ -251,7 +251,7 @@ export default function ProjectDetail() {
                 value={project.status}
                 disabled={statusUpdate.isPending}
                 onChange={(e) => statusUpdate.mutate(e.target.value)}
-                className="text-xs border rounded px-2 py-0.5 disabled:opacity-50"
+                className="text-xs border rounded-lg px-2 py-0.5 disabled:opacity-50 transition-all duration-200"
               >
                 {STATUSES.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -259,7 +259,7 @@ export default function ProjectDetail() {
               </select>
               <button
                 onClick={startEditing}
-                className="text-xs px-2 py-0.5 border rounded hover:bg-gray-50"
+                className="text-xs px-2 py-0.5 font-medium border rounded-lg hover:bg-gray-50 transition-all duration-200"
               >
                 Edit
               </button>
@@ -303,7 +303,7 @@ export default function ProjectDetail() {
               <h2 className="text-sm font-semibold">Tasks</h2>
               <button
                 onClick={() => setShowTaskForm(!showTaskForm)}
-                className="text-xs px-2 py-0.5 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className="text-xs px-2 py-0.5 font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
               >
                 {showTaskForm ? 'Cancel' : 'Add Task'}
               </button>
@@ -345,7 +345,7 @@ export default function ProjectDetail() {
                 <button
                   type="submit"
                   disabled={createTask.isPending}
-                  className="px-3 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                  className="px-3 py-1 text-xs font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all duration-200"
                 >
                   {createTask.isPending ? 'Creating...' : 'Create Task'}
                 </button>
@@ -356,7 +356,7 @@ export default function ProjectDetail() {
                 <button
                   key={f}
                   onClick={() => setTaskFilter(f)}
-                  className={`text-xs px-2 py-0.5 rounded border ${taskFilter === f ? 'bg-blue-600 text-white border-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+                  className={`text-xs px-2 py-0.5 rounded-lg border font-medium transition-all duration-200 ${taskFilter === f ? 'bg-blue-600 text-white border-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
                 >
                   {f === 'all' ? 'All' : f.replace(/_/g, ' ')}
                 </button>
@@ -379,7 +379,7 @@ export default function ProjectDetail() {
                         value={t.status}
                         disabled={updatingTaskId === t.id && taskStatusUpdate.isPending}
                         onChange={(e) => taskStatusUpdate.mutate({ taskId: t.id, status: e.target.value })}
-                        className="text-xs border rounded px-2 py-0.5 disabled:opacity-50"
+                        className="text-xs border rounded-lg px-2 py-0.5 disabled:opacity-50 transition-all duration-200"
                       >
                         {TASK_STATUSES.map((s) => (
                           <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>
@@ -392,7 +392,7 @@ export default function ProjectDetail() {
                       <button
                         onClick={() => { if (window.confirm('Delete this task?')) removeTask.mutate(t.id); }}
                         disabled={deletingTaskId === t.id && removeTask.isPending}
-                        className="text-xs text-red-500 hover:text-red-700 disabled:opacity-50"
+                        className="text-xs text-red-500 hover:text-red-700 disabled:opacity-50 transition-all duration-200"
                       >
                         {deletingTaskId === t.id && removeTask.isPending ? 'Deleting...' : 'Delete'}
                       </button>
@@ -407,7 +407,7 @@ export default function ProjectDetail() {
           <button
             onClick={handleDelete}
             disabled={remove.isPending}
-            className="mt-3 px-3 py-1 text-xs border border-red-500 text-red-500 rounded hover:bg-red-50 disabled:opacity-50"
+            className="mt-3 px-3 py-1 text-xs font-medium border border-red-500 text-red-500 rounded-lg hover:bg-red-50 disabled:opacity-50 transition-all duration-200"
           >
             {remove.isPending ? 'Deleting...' : 'Delete Project'}
           </button>
@@ -415,7 +415,7 @@ export default function ProjectDetail() {
       )}
 
       {project && editing && (
-        <form onSubmit={handleSubmit} className="mt-4 border rounded p-4 space-y-3">
+        <form onSubmit={handleSubmit} className="mt-4 bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4 space-y-3">
           <div>
             <label htmlFor="edit-name" className="block text-sm font-medium mb-1">Name</label>
             <input
@@ -442,14 +442,14 @@ export default function ProjectDetail() {
             <button
               type="submit"
               disabled={update.isPending}
-              className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all duration-200"
             >
               {update.isPending ? 'Saving...' : 'Save'}
             </button>
             <button
               type="button"
               onClick={() => { setEditing(false); setFormError(''); }}
-              className="px-4 py-2 text-sm border rounded hover:bg-gray-50"
+              className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-gray-50 transition-all duration-200"
             >
               Cancel
             </button>

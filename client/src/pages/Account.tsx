@@ -34,7 +34,7 @@ export default function Account() {
   return (
     <div className="flex justify-center pt-24 px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-lg shadow p-8">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-8">
           <h1 className="text-2xl font-bold text-center mb-1">Account</h1>
           <p className="text-gray-500 text-center mb-8">Update your password</p>
 
@@ -69,7 +69,7 @@ export default function Account() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 text-white py-2 rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
+              className="w-full bg-indigo-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition-all duration-200"
             >
               {loading ? 'Changing...' : 'Change Password'}
             </button>

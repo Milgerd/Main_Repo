@@ -12,10 +12,10 @@ export default function NavBar() {
   };
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `px-3 py-1.5 rounded-md text-sm font-medium transition ${isActive ? 'bg-indigo-50 text-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`;
+    `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isActive ? 'bg-indigo-100 text-indigo-700' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`;
 
   return (
-    <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-3.5 bg-white border-b shadow-sm">
+    <nav className="sticky top-0 z-50 flex items-center justify-between px-6 py-3.5 bg-white border-b shadow-[0_2px_6px_rgba(0,0,0,0.08)]">
       <div className="flex items-center gap-6">
         <NavLink to="/dashboard" className="text-xl font-bold text-indigo-600 tracking-tight">
           LaunchForge
@@ -28,14 +28,14 @@ export default function NavBar() {
           <NavLink to="/account" className={linkClass}>Account</NavLink>
           {user?.role === 'admin' && (
             <NavLink to="/admin" className={({ isActive }) =>
-              `px-3 py-1.5 rounded-md text-sm font-medium transition ${isActive ? 'bg-purple-50 text-purple-700' : 'text-purple-600 hover:bg-purple-50 hover:text-purple-700'}`
+              `px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${isActive ? 'bg-purple-100 text-purple-700' : 'text-purple-600 hover:bg-purple-50 hover:text-purple-700'}`
             }>Admin</NavLink>
           )}
         </div>
       </div>
       <div className="flex items-center gap-3">
         {user?.email && <span className="text-xs text-gray-400">{user.email}</span>}
-        <button onClick={handleLogout} className="px-4 py-1.5 rounded-md text-sm font-medium border border-gray-300 text-gray-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition">
+        <button onClick={handleLogout} className="px-4 py-1.5 rounded-lg text-sm font-medium border border-gray-300 text-gray-600 hover:border-red-300 hover:bg-red-50 hover:text-red-600 transition-all duration-200">
           Logout
         </button>
       </div>

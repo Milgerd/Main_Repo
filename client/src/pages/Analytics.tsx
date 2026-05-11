@@ -16,7 +16,7 @@ export default function Analytics() {
       <h1 className="text-2xl font-bold text-gray-900 mb-8">Analytics</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6">
           <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">Tasks by Status</h2>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={data.taskStats}>
@@ -28,7 +28,7 @@ export default function Analytics() {
           </ResponsiveContainer>
         </div>
 
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6">
           <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">Projects by Status</h2>
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={data.projectStats}>
@@ -41,7 +41,7 @@ export default function Analytics() {
         </div>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6 mb-6">
         <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">Activity (Last 30 Days)</h2>
         <ResponsiveContainer width="100%" height={240}>
           <LineChart data={data.activityTrend}>
@@ -54,7 +54,7 @@ export default function Analytics() {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6">
         <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">Top Users by Activity</h2>
         <table className="w-full text-sm">
           <thead>

@@ -30,7 +30,7 @@ export default function AIGenerate() {
       <h1 className="text-2xl font-bold text-gray-900 mb-2">AI Launch Plan Generator</h1>
       <p className="text-gray-500 mb-8 text-sm">Describe your project and get an AI-generated launch plan.</p>
 
-      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-4 mb-8">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6 space-y-4 mb-8">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
           <input className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -52,14 +52,14 @@ export default function AIGenerate() {
             value={form.projectId} onChange={e => setForm({ ...form, projectId: e.target.value })} required />
         </div>
         <button type="submit" disabled={loading}
-          className="w-full bg-indigo-600 text-white rounded-md py-2 text-sm font-medium hover:bg-indigo-700 transition disabled:opacity-50">
+          className="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50">
           {loading ? 'Generating...' : 'Generate Launch Plan'}
         </button>
         {error && <p className="text-sm text-red-500">{error}</p>}
       </form>
 
       {result && (
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-6">
           <h2 className="text-sm font-semibold text-gray-500 uppercase mb-4">Generated Launch Plan</h2>
           <pre className="whitespace-pre-wrap text-sm text-gray-700 leading-relaxed">{result}</pre>
         </div>

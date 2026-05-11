@@ -60,14 +60,14 @@ export default function Projects() {
         <h1 className="text-2xl font-bold">Projects</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+          className="px-3 py-1 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200"
         >
           {showForm ? 'Cancel' : 'Create Project'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleSubmit} className="border rounded p-4 mb-6 space-y-3">
+        <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4 mb-6 space-y-3">
           <div>
             <label htmlFor="name" className="block text-sm font-medium mb-1">Name</label>
             <input
@@ -93,7 +93,7 @@ export default function Projects() {
           <button
             type="submit"
             disabled={create.isPending}
-            className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-all duration-200"
           >
             {create.isPending ? 'Creating...' : 'Create'}
           </button>
@@ -114,7 +114,7 @@ export default function Projects() {
             <li key={p.id}>
               <Link
                 to={`/projects/${p.id}`}
-                className="block border rounded p-4 hover:bg-gray-50"
+                className="block bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4 hover:bg-gray-50"
               >
                 <div className="flex items-center justify-between mb-1">
                   <span className="font-medium">{p.name}</span>
