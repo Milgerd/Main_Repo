@@ -1,4 +1,8 @@
 const pool = require('../../../db');
+const { redisClient } = require('../../../db/redis');
+
+const CACHE_KEY = 'analytics:summary';
+const CACHE_TTL = 60;
 
 async function getTaskStats() {
   const result = await pool.query(`
@@ -43,4 +47,32 @@ async function getUserEngagement() {
   return result.rows;
 }
 
-module.exports = { getTaskStats, getProjectStats, getActivityTrend, getUserEngagement };
+async function getAnalyticsSummary() {
+  try {
+    const cached = await redisClient.get(CACHE_KEY);
+    if (cached) {
+      return { data: JSON.parse(cached), source: 'cache' };
+    }
+  } catch (err) {
+    console.warn('Redis read failed, falling back to DB:', err.message);
+  }
+
+  const [taskStats, projectStats, activityTrend, userEngagement] = await Promise.all([
+    getTaskStats(),
+    getProjectStats(),
+    getActivityTrend(),
+    getUserEngagement(),
+  ]);
+
+  const data = { taskStats, projectStats, activityTrend, userEngagement };
+
+  try {
+    await redisClient.set(CACHE_KEY, JSON.stringify(data), { EX: CACHE_TTL });
+  } catch (err) {
+    console.warn('Redis write failed:', err.message);
+  }
+
+  return { data, source: 'database' };
+}
+
+module.exports = { getAnalyticsSummary };

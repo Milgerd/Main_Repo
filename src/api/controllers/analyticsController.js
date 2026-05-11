@@ -1,14 +1,8 @@
-const { getTaskStats, getProjectStats, getActivityTrend, getUserEngagement } = require('../services/analyticsService');
+const { getAnalyticsSummary } = require('../services/analyticsService');
 
 async function getAnalytics(req, res) {
-  const [taskStats, projectStats, activityTrend, userEngagement] = await Promise.all([
-    getTaskStats(),
-    getProjectStats(),
-    getActivityTrend(),
-    getUserEngagement(),
-  ]);
-
-  res.json({ taskStats, projectStats, activityTrend, userEngagement });
+  const { data, source } = await getAnalyticsSummary();
+  res.json({ source, ...data });
 }
 
 module.exports = { getAnalytics };
