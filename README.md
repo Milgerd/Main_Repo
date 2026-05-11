@@ -16,6 +16,22 @@ Full-stack AI-powered project management platform demonstrating end-to-end devel
 
 ## Screenshots
 
+**Login Page**
+
+![Login Page](README-assets/login-page.png)
+
+**Dashboard — User View**
+
+![Dashboard User](README-assets/dashboard-user.png)
+
+**Dashboard — Admin View**
+
+![Dashboard Admin](README-assets/dashboard-admin.png)
+
+**Dashboard — Tab View**
+
+![Dashboard Tab](README-assets/dashboard-tab.png)
+
 **Analytics Dashboard** — Task and project status charts, 30-day activity trend, and top users by engagement
 
 ![Analytics Dashboard](README-assets/screenshot-analytics.jpg)
