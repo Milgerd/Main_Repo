@@ -53,7 +53,7 @@ const listTasks = async (req, res) => {
     return res.status(404).json({ error: 'Project not found' });
   }
 
-  let query = 'SELECT id, title, description, status, due_date, created_at, updated_at FROM tasks WHERE project_id = $1';
+  let query = 'SELECT t.id, t.title, t.description, t.status, t.due_date, t.created_at, t.updated_at, u.email AS assigned_email FROM tasks t JOIN users u ON t.user_id = u.id WHERE t.project_id = $1';
   const params = [projectId];
 
   if (status) {

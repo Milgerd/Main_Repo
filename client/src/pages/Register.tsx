@@ -33,8 +33,19 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-full max-w-sm p-6 bg-white rounded shadow">
+    <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ backgroundImage: "url('/login-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(0,0,0,0.35)' }} />
+      <div className="flex items-center gap-16 max-w-5xl w-full relative z-10">
+        <div className="hidden md:block flex-1" style={{ transform: 'rotate(-2deg)' }}>
+          <div className="relative rounded-sm px-10 py-12" style={{ backgroundColor: '#fef9c3', boxShadow: '2px 4px 12px rgba(0,0,0,0.12)' }}>
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-4 rounded-sm" style={{ backgroundColor: '#d97706', opacity: 0.7 }} />
+            <h2 className="font-bold mb-4" style={{ fontFamily: "'Caveat', cursive", color: '#92400e', fontSize: '32px' }}>Start here.</h2>
+            <p className="leading-relaxed" style={{ fontFamily: "'Caveat', cursive", color: '#78350f', fontSize: '20px' }}>
+              Create your account in seconds and let LaunchForge AI handle the heavy lifting — from planning to launch, we've got your back.
+            </p>
+          </div>
+        </div>
+        <div className="w-full max-w-sm shrink-0 p-6 bg-white rounded shadow">
         <h1 className="text-2xl font-bold mb-6 text-center">Create Account</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,6 +90,7 @@ export default function Register() {
           Already have an account?{' '}
           <Link to="/login" className="text-blue-600 hover:underline">Login</Link>
         </p>
+      </div>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ interface Task {
   description: string | null;
   status: string;
   due_date: string | null;
+  assigned_email: string;
   created_at: string;
   updated_at: string;
 }
@@ -387,6 +388,10 @@ export default function ProjectDetail() {
                       </select>
                     </div>
                     {t.description && <p className="text-xs text-gray-600 mt-1">{t.description}</p>}
+                    <div className="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                      {t.due_date && <span>Due {new Date(t.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>}
+                      <span>Assigned to {t.assigned_email}</span>
+                    </div>
                     <div className="flex items-center justify-between mt-1">
                       <p className="text-xs text-gray-400">Created {new Date(t.created_at).toLocaleDateString()}</p>
                       <button
