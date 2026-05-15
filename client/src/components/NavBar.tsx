@@ -25,6 +25,7 @@ export default function NavBar() {
           <NavLink to="/projects" className={linkClass}>Projects</NavLink>
           <NavLink to="/analytics" className={linkClass}>Analytics</NavLink>
           <NavLink to="/ai" className={linkClass}>AI Generate</NavLink>
+          <NavLink to="/campaigns" className={linkClass}>Campaigns</NavLink>
           <NavLink to="/account" className={linkClass}>Account</NavLink>
           {user?.role === 'admin' && (
             <NavLink to="/admin" className={({ isActive }) =>
