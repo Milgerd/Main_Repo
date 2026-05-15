@@ -5,12 +5,18 @@ import useAuth from '../hooks/useAuth';
 interface Campaign {
   id: number;
   workspace_id: number;
+  project_id: number | null;
   campaign_type: string;
   content: string;
   status: string;
   generated_by_ai: boolean;
   created_at: string;
   startup_name?: string;
+}
+
+interface ProjectInfo {
+  id: number;
+  name: string;
 }
 
 type View = 'list' | 'create' | 'detail';
@@ -47,6 +53,7 @@ export default function Campaigns() {
   const { user } = useAuth();
   const [view, setView] = useState<View>('list');
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [projects, setProjects] = useState<ProjectInfo[]>([]);
   const [selected, setSelected] = useState<Campaign | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -78,6 +85,7 @@ export default function Campaigns() {
 
   useEffect(() => {
     fetchCampaigns();
+    api.get('/projects').then((res) => setProjects(res.data)).catch(() => {});
   }, []);
 
   const openDetail = (campaign: Campaign) => {
@@ -283,37 +291,80 @@ export default function Campaigns() {
         <p className="text-sm text-gray-500">No campaigns yet. Create your first one.</p>
       )}
 
-      {!loading && !error && campaigns.length > 0 && (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {campaigns.map((c) => (
-            <div
-              key={c.id}
-              className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4 flex flex-col"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
-                  {toTitleCase(c.campaign_type)}
-                </span>
-                <StatusBadge status={c.status} />
-              </div>
-              <p className="text-sm text-gray-600 mb-3 flex-1">
-                {c.content && c.content.length > 100 ? c.content.slice(0, 100) + '…' : c.content}
-              </p>
-              <div className="flex items-center justify-between">
-                <p className="text-xs text-gray-400">
-                  {new Date(c.created_at).toLocaleDateString()}
-                </p>
-                <button
-                  onClick={() => openDetail(c)}
-                  className="text-xs font-medium text-indigo-600 hover:text-indigo-800"
-                >
-                  View
-                </button>
-              </div>
+      {!loading && !error && campaigns.length > 0 && (() => {
+        const linked = campaigns.filter((c) => c.project_id !== null);
+        const standalone = campaigns.filter((c) => c.project_id === null);
+        const allStandalone = linked.length === 0;
+
+        const projectMap = new Map<number, string>();
+        projects.forEach((p) => projectMap.set(p.id, p.name));
+
+        const grouped = new Map<number, Campaign[]>();
+        linked.forEach((c) => {
+          const pid = c.project_id!;
+          if (!grouped.has(pid)) grouped.set(pid, []);
+          grouped.get(pid)!.push(c);
+        });
+
+        const renderCard = (c: Campaign) => (
+          <div
+            key={c.id}
+            className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-4 flex flex-col"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">
+                {toTitleCase(c.campaign_type)}
+              </span>
+              <StatusBadge status={c.status} />
             </div>
-          ))}
-        </div>
-      )}
+            <p className="text-sm text-gray-600 mb-3 flex-1">
+              {c.content && c.content.length > 100 ? c.content.slice(0, 100) + '…' : c.content}
+            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-xs text-gray-400">
+                {new Date(c.created_at).toLocaleDateString()}
+              </p>
+              <button
+                onClick={() => openDetail(c)}
+                className="text-xs font-medium text-indigo-600 hover:text-indigo-800"
+              >
+                View
+              </button>
+            </div>
+          </div>
+        );
+
+        if (allStandalone) {
+          return (
+            <div className="grid gap-4 sm:grid-cols-2">
+              {campaigns.map(renderCard)}
+            </div>
+          );
+        }
+
+        return (
+          <div className="space-y-8">
+            {Array.from(grouped.entries()).map(([pid, group]) => (
+              <div key={pid}>
+                <h2 className="text-sm font-semibold text-gray-900 mb-3">
+                  Project: {projectMap.get(pid) || `#${pid}`}
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {group.map(renderCard)}
+                </div>
+              </div>
+            ))}
+            {standalone.length > 0 && (
+              <div>
+                <h2 className="text-sm font-semibold text-gray-900 mb-3">Standalone Campaigns</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {standalone.map(renderCard)}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
     </div>
   );
 }

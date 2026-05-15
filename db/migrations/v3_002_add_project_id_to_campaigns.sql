@@ -1,0 +1,1 @@
+ALTER TABLE campaigns ADD COLUMN project_id INTEGER REFERENCES projects(id) ON DELETE SET NULL;

@@ -81,10 +81,9 @@ export default function NavBar() {
         </NavLink>
         <div className="flex items-center gap-1">
           <NavLink to="/dashboard" className={linkClass}>Dashboard</NavLink>
+          <NavLink to="/ai" className={linkClass}>AI Generate</NavLink>
           <NavLink to="/projects" className={linkClass}>Projects</NavLink>
           <NavLink to="/analytics" className={linkClass}>Analytics</NavLink>
-          <NavLink to="/ai" className={linkClass}>AI Generate</NavLink>
-          <NavLink to="/generate-plan" className={linkClass}>Launch Plan</NavLink>
           <NavLink to="/campaigns" className={linkClass}>Campaigns</NavLink>
           <NavLink to="/feedback" className={linkClass}>Feedback</NavLink>
           <NavLink to="/github" className={linkClass}>GitHub</NavLink>

@@ -22,6 +22,7 @@ interface Task {
   title: string;
   description: string | null;
   status: string;
+  priority: 'high' | 'medium' | 'low' | null;
   due_date: string | null;
   assigned_email: string;
   created_at: string;
@@ -44,6 +45,11 @@ export default function ProjectDetail() {
   const queryClient = useQueryClient();
 
   const STATUSES = ['planning', 'active', 'completed'] as const;
+  const priorityColors: Record<string, string> = {
+    high: 'bg-red-100 text-red-700',
+    medium: 'bg-yellow-100 text-yellow-700',
+    low: 'bg-green-100 text-green-700',
+  };
 
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
@@ -375,7 +381,14 @@ export default function ProjectDetail() {
                 {tasks.map((t) => (
                   <li key={t.id} className="border rounded p-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium">{t.title}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium">{t.title}</span>
+                        {t.priority && (
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${priorityColors[t.priority] || 'bg-gray-100 text-gray-600'}`}>
+                            {t.priority}
+                          </span>
+                        )}
+                      </div>
                       <select
                         value={t.status}
                         disabled={updatingTaskId === t.id && taskStatusUpdate.isPending}

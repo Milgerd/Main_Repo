@@ -54,8 +54,8 @@ async function savePlan(req, res) {
   try {
     await client.query('BEGIN');
 
-    let projectCount = 0;
     let taskCount = 0;
+    const insertedProjects = [];
 
     for (const project of projects) {
       const projectResult = await client.query(
@@ -63,7 +63,7 @@ async function savePlan(req, res) {
         [req.user.id, project.name, project.description || null, 'active']
       );
       const projectId = projectResult.rows[0].id;
-      projectCount++;
+      insertedProjects.push({ id: projectId, name: project.name, description: project.description || '' });
 
       for (const task of project.tasks || []) {
         await client.query(
@@ -79,13 +79,14 @@ async function savePlan(req, res) {
     await createNotification(
       req.user.id,
       'plan_generated',
-      `Your AI launch plan has been saved with ${projectCount} projects and ${taskCount} tasks.`
+      `Your AI launch plan has been saved with ${insertedProjects.length} projects and ${taskCount} tasks.`
     );
 
     return res.status(201).json({
       message: 'Plan saved successfully',
-      projectCount,
+      projectCount: insertedProjects.length,
       taskCount,
+      projects: insertedProjects,
     });
   } catch (err) {
     await client.query('ROLLBACK');
@@ -198,4 +199,54 @@ async function generatePlanDoc(req, res) {
   }
 }
 
-module.exports = { generatePlan, savePlan, generatePlanDoc };
+async function generateCampaigns(req, res) {
+  const { projects } = req.body;
+
+  if (!Array.isArray(projects) || projects.length === 0) {
+    return res.status(400).json({ error: 'projects array is required' });
+  }
+
+  try {
+    const results = await Promise.all(
+      projects.map(async (project) => {
+        const message = await client.messages.create({
+          model: 'claude-opus-4-5',
+          max_tokens: 2048,
+          system: 'You are a startup marketing expert. You return only valid JSON. No markdown, no explanation, no code fences.',
+          messages: [
+            {
+              role: 'user',
+              content: `Generate a marketing campaign for a startup project called '${project.name}'. Project description: '${project.description}'. Return a JSON object with this exact structure: { "campaign_type": "launch_email" | "social_media" | "ad_creative", "content": "the full campaign content as a string" }`,
+            },
+          ],
+        });
+
+        const parsed = JSON.parse(message.content[0].text);
+
+        await pool.query(
+          'INSERT INTO campaigns (workspace_id, project_id, campaign_type, content, status, generated_by_ai) VALUES ($1, $2, $3, $4, $5, $6)',
+          [1, project.id, parsed.campaign_type, parsed.content, 'draft', true]
+        );
+
+        return {
+          project_id: project.id,
+          campaign_type: parsed.campaign_type,
+          content: parsed.content,
+        };
+      })
+    );
+
+    await createNotification(
+      req.user.id,
+      'campaign',
+      `AI generated ${results.length} campaign(s) from your launch plan.`
+    );
+
+    return res.status(201).json({ message: 'Campaigns generated', campaigns: results });
+  } catch (err) {
+    console.error('generateCampaigns error:', err.message);
+    return res.status(500).json({ error: 'Failed to generate campaigns' });
+  }
+}
+
+module.exports = { generatePlan, savePlan, generatePlanDoc, generateCampaigns };

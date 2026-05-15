@@ -247,6 +247,34 @@ No v1 or v2 code is removed. Everything is additive.
 
 ---
 
+### Phase 14.5 — AI-Powered Launch Plan Generation
+**Goal:** Generate a structured startup launch plan using AI, persist it as real projects and tasks in the database, support user assignment per task, and export the full plan as a downloadable Word document.
+
+**Why:** The existing AI feature returned unstructured text. This phase turns AI output into actionable database records — real projects and tasks that can be assigned to team members and tracked. The Word export adds a shareable deliverable the user can take outside the platform.
+
+**What was built:**
+
+| Component | Detail |
+|---|---|
+| DB migration | `priority` column added to `tasks` table (high / medium / low, CHECK constraint, NOT NULL DEFAULT 'medium') |
+| `POST /api/ai/generate-plan` | Calls Anthropic SDK with structured JSON prompt, returns preview plan without saving |
+| `POST /api/ai/save-plan` | Receives confirmed plan with user assignments, inserts projects and tasks in a DB transaction, writes notification |
+| `POST /api/ai/download-plan` | Generates formatted .docx using docx npm package, served as file download |
+| GeneratePlan.tsx | Two-state page: description input → AI preview with project cards, task list, priority badges, user assignment dropdowns, Save and Download buttons |
+| NavBar | "Launch Plan" link added |
+
+**Deliverables:**
+- [x] priority column migrated to tasks table
+- [x] generate-plan endpoint returning structured JSON
+- [x] save-plan endpoint with transaction and notification
+- [x] download-plan endpoint generating Word document
+- [x] Frontend GeneratePlan page fully wired
+- [x] GitHub committed
+
+**Status: ✅ Complete**
+
+---
+
 ### Phase 15 — Documentation & Speak Guide
 **Goal:** Complete documentation covering all v1 + v2 + v3 decisions for interview preparation and internship submission.
 
@@ -291,6 +319,7 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 12 | GitHub Integration | ✅ Complete |
 | Phase 13 | Notification System | ✅ Complete |
 | Phase 14 | RBAC Extension & Viewer Role | ⏳ Pending |
+| Phase 14.5 | AI-Powered Launch Plan Generation | ✅ Complete |
 | Phase 15 | Documentation & Speak Guide | ⏳ Pending |
 
 ---
@@ -338,6 +367,7 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 12 complete | `feat: add GitHub integration with AI readiness report` | ✅ |
 | Phase 13 complete | `feat: add in-app notification system` | ✅ |
 | Phase 14 complete | `feat: extend RBAC with viewer role` | ⏳ |
+| Phase 14.5 complete | `feat: add AI-powered launch plan generation with project/task persistence and Word export` | ✅ |
 | Phase 15 complete | `docs: add v3 speak guide, update README and architecture docs` | ⏳ |
 
 ---
