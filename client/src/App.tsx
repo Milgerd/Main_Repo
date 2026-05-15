@@ -12,6 +12,7 @@ import Admin from './pages/Admin';
 import Analytics from './pages/Analytics';
 import AIGenerate from './pages/AIGenerate';
 import Campaigns from './pages/Campaigns';
+import Feedback from './pages/Feedback';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/ai" element={<AIGenerate />} />
         <Route path="/campaigns" element={<Campaigns />} />
+        <Route path="/feedback" element={<Feedback />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>
