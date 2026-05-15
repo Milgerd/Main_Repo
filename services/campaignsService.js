@@ -17,7 +17,7 @@ async function createCampaign({ workspaceId, campaignType, content, generatedByA
 
 async function getCampaignsByUser(userId) {
   const { rows } = await pool.query(
-    `SELECT c.id, c.workspace_id, c.campaign_type, c.status, c.generated_by_ai, c.created_at,
+    `SELECT c.id, c.workspace_id, c.project_id, c.campaign_type, c.content, c.status, c.generated_by_ai, c.created_at,
             w.startup_name
      FROM campaigns c
      JOIN workspaces w ON w.id = c.workspace_id

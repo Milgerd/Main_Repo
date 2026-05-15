@@ -292,8 +292,8 @@ export default function Campaigns() {
       )}
 
       {!loading && !error && campaigns.length > 0 && (() => {
-        const linked = campaigns.filter((c) => c.project_id !== null);
-        const standalone = campaigns.filter((c) => c.project_id === null);
+        const linked = campaigns.filter((c) => c.project_id != null);
+        const standalone = campaigns.filter((c) => c.project_id == null);
         const allStandalone = linked.length === 0;
 
         const projectMap = new Map<number, string>();
