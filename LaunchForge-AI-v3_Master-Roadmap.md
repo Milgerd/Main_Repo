@@ -169,13 +169,13 @@ No v1 or v2 code is removed. Everything is additive.
 - AI readiness report rendered as formatted text
 
 **Deliverables:**
-- [ ] github routes, controller, service files created
-- [ ] GitHub public API call working
-- [ ] AI readiness report generating correctly
-- [ ] Frontend GitHub panel built
-- [ ] GitHub committed
+- [x] github routes, controller, service files created
+- [x] GitHub public API call working
+- [x] AI readiness report generating correctly
+- [x] Frontend GitHub panel built
+- [x] GitHub committed
 
-**Status: ⏳ Pending**
+**Status: ✅ Complete**
 
 ---
 
@@ -205,12 +205,12 @@ No v1 or v2 code is removed. Everything is additive.
 - Each notification shows type, message, timestamp, and read/unread state
 
 **Deliverables:**
-- [ ] notifications routes, controller, service files created
-- [ ] Notification writes wired into workspace, campaign, and feedback creation events
-- [ ] Frontend bell icon + dropdown built
-- [ ] GitHub committed
+- [x] notifications routes, controller, service files created
+- [x] Notification writes wired into campaign and feedback creation events
+- [x] Frontend bell icon + dropdown built
+- [x] GitHub committed
 
-**Status: ⏳ Pending**
+**Status: ✅ Complete**
 
 ---
 
@@ -288,8 +288,8 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 9 | Workspace Reframe & Data Model Extension | ✅ Complete |
 | Phase 10 | Campaigns Module | ✅ Complete |
 | Phase 11 | Feedback System | ✅ Complete |
-| Phase 12 | GitHub Integration | ⏳ Pending |
-| Phase 13 | Notification System | ⏳ Pending |
+| Phase 12 | GitHub Integration | ✅ Complete |
+| Phase 13 | Notification System | ✅ Complete |
 | Phase 14 | RBAC Extension & Viewer Role | ⏳ Pending |
 | Phase 15 | Documentation & Speak Guide | ⏳ Pending |
 
@@ -335,8 +335,8 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 9 complete | `feat: add workspaces, campaigns, feedback, notifications schema (v3 migration)` | ✅ |
 | Phase 10 complete | `feat: add campaigns module with AI generation and persistence` | ✅ |
 | Phase 11 complete | `feat: add feedback collection and summary endpoints` | ✅ |
-| Phase 12 complete | `feat: add GitHub integration with AI readiness report` | ⏳ |
-| Phase 13 complete | `feat: add in-app notification system` | ⏳ |
+| Phase 12 complete | `feat: add GitHub integration with AI readiness report` | ✅ |
+| Phase 13 complete | `feat: add in-app notification system` | ✅ |
 | Phase 14 complete | `feat: extend RBAC with viewer role` | ⏳ |
 | Phase 15 complete | `docs: add v3 speak guide, update README and architecture docs` | ⏳ |
 

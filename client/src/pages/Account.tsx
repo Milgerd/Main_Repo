@@ -1,7 +1,15 @@
 import { useState, type FormEvent } from 'react';
 import api from '../lib/axios';
+import useAuth from '../hooks/useAuth';
+
+const roleBadgeColors: Record<string, string> = {
+  admin: 'bg-purple-100 text-purple-700',
+  user: 'bg-blue-100 text-blue-700',
+  viewer: 'bg-green-100 text-green-700',
+};
 
 export default function Account() {
+  const { user } = useAuth();
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [error, setError] = useState('');
@@ -36,7 +44,19 @@ export default function Account() {
       <div className="w-full max-w-md">
         <div className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] hover:shadow-[0_4px_12px_rgba(0,0,0,0.1)] transition-all duration-200 p-8">
           <h1 className="text-2xl font-bold text-center mb-1">Account</h1>
-          <p className="text-gray-500 text-center mb-8">Update your password</p>
+          <p className="text-gray-500 text-center mb-8">Manage your account settings</p>
+
+          {user && (
+            <div className="flex items-center justify-between border border-gray-200 rounded-lg px-4 py-3 mb-6">
+              <div>
+                <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Account Role</p>
+                <p className="text-sm text-gray-700 mt-0.5">{user.email}</p>
+              </div>
+              <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${roleBadgeColors[user.role] || 'bg-gray-100 text-gray-600'}`}>
+                {user.role}
+              </span>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

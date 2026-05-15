@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from '../lib/axios';
+import useAuth from '../hooks/useAuth';
 
 interface RepoMetadata {
   name: string;
@@ -19,6 +20,7 @@ interface AnalysisResult {
 }
 
 export default function GitHub() {
+  const { user } = useAuth();
   const [connectUrl, setConnectUrl] = useState('');
   const [analyzeUrl, setAnalyzeUrl] = useState('');
   const [connectStatus, setConnectStatus] = useState('');
@@ -71,29 +73,31 @@ export default function GitHub() {
       )}
 
       {/* Connect Repo Section */}
-      <section className="mb-10 p-6 border rounded-lg bg-white shadow-sm">
-        <h2 className="text-lg font-semibold mb-4">Connect Repository</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Save a GitHub repo URL to your workspace. Must be a public repository.
-        </p>
-        <input
-          type="text"
-          placeholder="https://github.com/owner/repo"
-          value={connectUrl}
-          onChange={(e) => setConnectUrl(e.target.value)}
-          className="w-full border rounded px-3 py-2 mb-3 text-sm"
-        />
-        <button
-          onClick={handleConnect}
-          disabled={connectLoading || !connectUrl.trim()}
-          className="bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-700 disabled:opacity-50"
-        >
-          {connectLoading ? 'Connecting...' : 'Connect Repository'}
-        </button>
-        {connectStatus && (
-          <p className="mt-3 text-green-600 text-sm">{connectStatus}</p>
-        )}
-      </section>
+      {user?.role !== 'viewer' && (
+        <section className="mb-10 p-6 border rounded-lg bg-white shadow-sm">
+          <h2 className="text-lg font-semibold mb-4">Connect Repository</h2>
+          <p className="text-sm text-gray-500 mb-4">
+            Save a GitHub repo URL to your workspace. Must be a public repository.
+          </p>
+          <input
+            type="text"
+            placeholder="https://github.com/owner/repo"
+            value={connectUrl}
+            onChange={(e) => setConnectUrl(e.target.value)}
+            className="w-full border rounded px-3 py-2 mb-3 text-sm"
+          />
+          <button
+            onClick={handleConnect}
+            disabled={connectLoading || !connectUrl.trim()}
+            className="bg-gray-800 text-white px-4 py-2 rounded text-sm hover:bg-gray-700 disabled:opacity-50"
+          >
+            {connectLoading ? 'Connecting...' : 'Connect Repository'}
+          </button>
+          {connectStatus && (
+            <p className="mt-3 text-green-600 text-sm">{connectStatus}</p>
+          )}
+        </section>
+      )}
 
       {/* Analyze Repo Section */}
       <section className="p-6 border rounded-lg bg-white shadow-sm">
@@ -101,20 +105,24 @@ export default function GitHub() {
         <p className="text-sm text-gray-500 mb-4">
           Fetch public repo metadata and generate an AI-powered deployment readiness report.
         </p>
-        <input
-          type="text"
-          placeholder="https://github.com/owner/repo"
-          value={analyzeUrl}
-          onChange={(e) => setAnalyzeUrl(e.target.value)}
-          className="w-full border rounded px-3 py-2 mb-3 text-sm"
-        />
-        <button
-          onClick={handleAnalyze}
-          disabled={analyzeLoading || !analyzeUrl.trim()}
-          className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700 disabled:opacity-50"
-        >
-          {analyzeLoading ? 'Analyzing...' : 'Analyze Repository'}
-        </button>
+        {user?.role !== 'viewer' && (
+          <>
+            <input
+              type="text"
+              placeholder="https://github.com/owner/repo"
+              value={analyzeUrl}
+              onChange={(e) => setAnalyzeUrl(e.target.value)}
+              className="w-full border rounded px-3 py-2 mb-3 text-sm"
+            />
+            <button
+              onClick={handleAnalyze}
+              disabled={analyzeLoading || !analyzeUrl.trim()}
+              className="bg-indigo-600 text-white px-4 py-2 rounded text-sm hover:bg-indigo-700 disabled:opacity-50"
+            >
+              {analyzeLoading ? 'Analyzing...' : 'Analyze Repository'}
+            </button>
+          </>
+        )}
 
         {/* Metadata Card */}
         {analysis && (

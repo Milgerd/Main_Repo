@@ -18,9 +18,10 @@ function authenticate(req, res, next) {
   }
 }
 
-function requireRole(role) {
+function requireRole(roles) {
+  const allowed = Array.isArray(roles) ? roles : [roles];
   return (req, res, next) => {
-    if (req.user.role !== role) {
+    if (!allowed.includes(req.user.role)) {
       return res.status(403).json({ error: 'Forbidden: insufficient permissions' });
     }
     next();

@@ -75,11 +75,14 @@ export default function Admin() {
     },
   });
 
-  const roleBadge = (role: string) => (
-    <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'}`}>
-      {role}
-    </span>
-  );
+  const roleBadge = (role: string) => {
+    const colors = role === 'admin' ? 'bg-purple-100 text-purple-700' : role === 'viewer' ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700';
+    return (
+      <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-medium ${colors}`}>
+        {role}
+      </span>
+    );
+  };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
@@ -116,8 +119,9 @@ export default function Admin() {
                       onChange={(e) => roleUpdate.mutate({ userId: u.id, role: e.target.value })}
                       className="text-xs border border-gray-300 rounded-lg px-2 py-1 disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
-                      <option value="user">user</option>
-                      <option value="admin">admin</option>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                      <option value="viewer">Viewer</option>
                     </select>
                   </td>
                 </tr>

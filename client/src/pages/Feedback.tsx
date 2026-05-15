@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../lib/axios';
+import useAuth from '../hooks/useAuth';
 
 interface FeedbackEntry {
   id: number;
@@ -45,6 +46,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (r: number) 
 }
 
 export default function Feedback() {
+  const { user } = useAuth();
   const [entries, setEntries] = useState<FeedbackEntry[]>([]);
   const [summary, setSummary] = useState<FeedbackSummary>({ count: 0, average_rating: null });
   const [loading, setLoading] = useState(false);
@@ -139,34 +141,36 @@ export default function Feedback() {
 
       <div className="grid gap-8 md:grid-cols-2">
         {/* ─── SUBMIT FORM ─── */}
-        <div>
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Submit Feedback</h2>
-          <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-6 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
-              <StarPicker value={rating} onChange={setRating} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Comments</label>
-              <textarea
-                rows={4}
-                value={feedbackText}
-                onChange={(e) => setFeedbackText(e.target.value)}
-                placeholder="Share your thoughts about this workspace..."
-                className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-            </div>
-            {submitError && <p className="text-sm text-red-500">{submitError}</p>}
-            {submitSuccess && <p className="text-sm text-green-600">{submitSuccess}</p>}
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50"
-            >
-              {submitting ? 'Submitting...' : 'Submit Feedback'}
-            </button>
-          </form>
-        </div>
+        {user?.role !== 'viewer' && (
+          <div>
+            <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Submit Feedback</h2>
+            <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Rating</label>
+                <StarPicker value={rating} onChange={setRating} />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Comments</label>
+                <textarea
+                  rows={4}
+                  value={feedbackText}
+                  onChange={(e) => setFeedbackText(e.target.value)}
+                  placeholder="Share your thoughts about this workspace..."
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              {submitError && <p className="text-sm text-red-500">{submitError}</p>}
+              {submitSuccess && <p className="text-sm text-green-600">{submitSuccess}</p>}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full bg-indigo-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-indigo-700 transition-all duration-200 disabled:opacity-50"
+              >
+                {submitting ? 'Submitting...' : 'Submit Feedback'}
+              </button>
+            </form>
+          </div>
+        )}
 
         {/* ─── FEEDBACK LIST ─── */}
         <div>
