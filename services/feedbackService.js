@@ -1,4 +1,5 @@
 const pool = require('../db');
+const { createNotification } = require('../src/api/services/notificationService.js');
 
 async function submit({ workspace_id, submitted_by, feedback_text, rating }) {
   const { rows } = await pool.query(
@@ -7,6 +8,7 @@ async function submit({ workspace_id, submitted_by, feedback_text, rating }) {
      RETURNING *`,
     [workspace_id, submitted_by, feedback_text, rating]
   );
+  await createNotification(submitted_by, 'feedback', 'New feedback received on your workspace');
   return rows[0];
 }
 

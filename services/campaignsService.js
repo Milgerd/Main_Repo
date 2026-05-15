@@ -1,4 +1,5 @@
 const pool = require('../db');
+const { createNotification } = require('../src/api/services/notificationService.js');
 
 async function createCampaign({ workspaceId, campaignType, content, generatedByAi, userId }) {
   const { rows } = await pool.query(
@@ -9,7 +10,9 @@ async function createCampaign({ workspaceId, campaignType, content, generatedByA
      RETURNING *`,
     [workspaceId, campaignType, content, generatedByAi, userId]
   );
-  return rows[0];
+  const campaign = rows[0];
+  await createNotification(userId, 'campaign', `New campaign generated: ${campaign.campaign_type}`);
+  return campaign;
 }
 
 async function getCampaignsByUser(userId) {

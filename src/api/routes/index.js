@@ -9,6 +9,7 @@ const analyticsRoutes = require('./analyticsRoutes');
 const campaignRoutes = require('./campaignRoutes');
 const feedbackRoutes = require('./feedbackRoutes');
 const githubRoutes = require('./githubRoutes.js');
+const notificationRoutes = require('./notificationRoutes.js');
 
 const adminLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -30,5 +31,6 @@ router.use('/analytics', apiLimiter, analyticsRoutes);
 router.use('/campaigns', apiLimiter, campaignRoutes);
 router.use('/feedback', apiLimiter, feedbackRoutes);
 router.use('/github', githubRoutes);
+router.use('/notifications', notificationRoutes);
 
 module.exports = router;
