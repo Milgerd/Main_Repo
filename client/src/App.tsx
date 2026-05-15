@@ -14,6 +14,7 @@ import AIGenerate from './pages/AIGenerate';
 import Campaigns from './pages/Campaigns';
 import Feedback from './pages/Feedback';
 import GitHub from './pages/GitHub';
+import GeneratePlan from './pages/GeneratePlan';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/campaigns" element={<Campaigns />} />
         <Route path="/feedback" element={<Feedback />} />
         <Route path="/github" element={<GitHub />} />
+        <Route path="/generate-plan" element={<GeneratePlan />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -10,6 +10,7 @@ const campaignRoutes = require('./campaignRoutes');
 const feedbackRoutes = require('./feedbackRoutes');
 const githubRoutes = require('./githubRoutes.js');
 const notificationRoutes = require('./notificationRoutes.js');
+const aiPlanRoutes = require('./aiPlanRoutes.js');
 
 const adminLimiter = rateLimit({
   windowMs: 60 * 1000,
@@ -27,6 +28,7 @@ router.use('/admin', adminLimiter, adminRoutes);
 router.use('/projects', apiLimiter, projectRoutes);
 router.use('/', apiLimiter, taskRoutes);
 router.use('/ai', apiLimiter, aiRoutes);
+router.use('/ai', apiLimiter, aiPlanRoutes);
 router.use('/analytics', apiLimiter, analyticsRoutes);
 router.use('/campaigns', apiLimiter, campaignRoutes);
 router.use('/feedback', apiLimiter, feedbackRoutes);
