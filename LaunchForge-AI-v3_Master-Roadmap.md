@@ -130,12 +130,12 @@ No v1 or v2 code is removed. Everything is additive.
 - Summary card: average rating + total count
 
 **Deliverables:**
-- [ ] feedback routes, controller, service files created
-- [ ] Frontend Feedback tab built
-- [ ] Summary endpoint returning avg + count
-- [ ] GitHub committed
+- [x] feedback routes, controller, service files created
+- [x] Frontend Feedback tab built
+- [x] Summary endpoint returning avg + count
+- [x] GitHub committed
 
-**Status: ⏳ Pending**
+**Status: ✅ Complete**
 
 ---
 
@@ -287,7 +287,7 @@ No v1 or v2 code is removed. Everything is additive.
 |---|---|---|
 | Phase 9 | Workspace Reframe & Data Model Extension | ✅ Complete |
 | Phase 10 | Campaigns Module | ✅ Complete |
-| Phase 11 | Feedback System | ⏳ Pending |
+| Phase 11 | Feedback System | ✅ Complete |
 | Phase 12 | GitHub Integration | ⏳ Pending |
 | Phase 13 | Notification System | ⏳ Pending |
 | Phase 14 | RBAC Extension & Viewer Role | ⏳ Pending |
@@ -334,7 +334,7 @@ No v1 or v2 code is removed. Everything is additive.
 |---|---|---|
 | Phase 9 complete | `feat: add workspaces, campaigns, feedback, notifications schema (v3 migration)` | ✅ |
 | Phase 10 complete | `feat: add campaigns module with AI generation and persistence` | ✅ |
-| Phase 11 complete | `feat: add feedback collection and summary endpoints` | ⏳ |
+| Phase 11 complete | `feat: add feedback collection and summary endpoints` | ✅ |
 | Phase 12 complete | `feat: add GitHub integration with AI readiness report` | ⏳ |
 | Phase 13 complete | `feat: add in-app notification system` | ⏳ |
 | Phase 14 complete | `feat: extend RBAC with viewer role` | ⏳ |
