@@ -237,38 +237,47 @@ No v1 or v2 code is removed. Everything is additive.
 - Admin panel
 
 **Deliverables:**
-- [ ] viewer role added to DB and RBAC middleware
-- [ ] Viewer-safe route guards implemented
-- [ ] Admin panel updated to assign viewer role
-- [ ] Frontend edit controls conditionally hidden for viewers
-- [ ] GitHub committed
+- [x] viewer role added to DB and RBAC middleware
+- [x] Viewer-safe route guards implemented
+- [x] Admin panel updated to assign viewer role
+- [x] Frontend edit controls conditionally hidden for viewers
+- [x] GitHub committed
 
-**Status: ⏳ Pending**
+**Status: ✅ Complete**
 
 ---
 
 ### Phase 14.5 — AI-Powered Launch Plan Generation
 **Goal:** Generate a structured startup launch plan using AI, persist it as real projects and tasks in the database, support user assignment per task, and export the full plan as a downloadable Word document.
 
-**Why:** The existing AI feature returned unstructured text. This phase turns AI output into actionable database records — real projects and tasks that can be assigned to team members and tracked. The Word export adds a shareable deliverable the user can take outside the platform.
+**Why:** The existing AI Generate feature returned unstructured text. This phase turns AI output into actionable database records — real projects and tasks that can be assigned to team members and tracked. The Word export adds a shareable deliverable the user can take outside the platform. Campaign generation was also connected to the launch plan flow — after saving a plan, users can generate AI campaign assets for each project, saved to the campaigns table linked by project_id.
 
 **What was built:**
 
 | Component | Detail |
 |---|---|
 | DB migration | `priority` column added to `tasks` table (high / medium / low, CHECK constraint, NOT NULL DEFAULT 'medium') |
+| DB migration | `project_id` nullable FK added to `campaigns` table (links campaigns to projects, ON DELETE SET NULL) |
 | `POST /api/ai/generate-plan` | Calls Anthropic SDK with structured JSON prompt, returns preview plan without saving |
-| `POST /api/ai/save-plan` | Receives confirmed plan with user assignments, inserts projects and tasks in a DB transaction, writes notification |
+| `POST /api/ai/save-plan` | Receives confirmed plan with user assignments, inserts projects and tasks in a DB transaction, returns inserted project ids, writes notification |
 | `POST /api/ai/download-plan` | Generates formatted .docx using docx npm package, served as file download |
-| GeneratePlan.tsx | Two-state page: description input → AI preview with project cards, task list, priority badges, user assignment dropdowns, Save and Download buttons |
-| NavBar | "Launch Plan" link added |
+| `POST /api/ai/generate-campaigns` | Takes saved projects as context, runs parallel AI calls per project, saves campaigns linked by project_id |
+| AIGenerate.tsx | Unified page: description input → AI preview with project cards, task list, priority badges, user assignment dropdowns, Save Plan button, Generate Campaign Assets button, Download as Word button |
+| Campaigns.tsx | Updated to group campaigns by project when project_id is present; falls back to flat list for standalone campaigns |
+| NavBar | AI Generate moved before Projects to reflect actual workflow; Launch Plan tab removed |
+| Projects tab | Priority badges added to task list (high/medium/low, color-coded) |
 
 **Deliverables:**
 - [x] priority column migrated to tasks table
+- [x] project_id column migrated to campaigns table
 - [x] generate-plan endpoint returning structured JSON
-- [x] save-plan endpoint with transaction and notification
+- [x] save-plan endpoint with transaction, notification, and returned project ids
 - [x] download-plan endpoint generating Word document
-- [x] Frontend GeneratePlan page fully wired
+- [x] generate-campaigns endpoint with parallel AI calls and project linking
+- [x] AIGenerate.tsx unified as full launch planner page
+- [x] Campaigns page grouped by project
+- [x] Priority badges on Projects tab
+- [x] NavBar reordered
 - [x] GitHub committed
 
 **Status: ✅ Complete**
@@ -318,7 +327,7 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 11 | Feedback System | ✅ Complete |
 | Phase 12 | GitHub Integration | ✅ Complete |
 | Phase 13 | Notification System | ✅ Complete |
-| Phase 14 | RBAC Extension & Viewer Role | ⏳ Pending |
+| Phase 14 | RBAC Extension & Viewer Role | ✅ Complete |
 | Phase 14.5 | AI-Powered Launch Plan Generation | ✅ Complete |
 | Phase 15 | Documentation & Speak Guide | ⏳ Pending |
 
@@ -366,8 +375,10 @@ No v1 or v2 code is removed. Everything is additive.
 | Phase 11 complete | `feat: add feedback collection and summary endpoints` | ✅ |
 | Phase 12 complete | `feat: add GitHub integration with AI readiness report` | ✅ |
 | Phase 13 complete | `feat: add in-app notification system` | ✅ |
-| Phase 14 complete | `feat: extend RBAC with viewer role` | ⏳ |
+| Phase 14 complete | `feat: extend RBAC with viewer role` | ✅ |
 | Phase 14.5 complete | `feat: add AI-powered launch plan generation with project/task persistence and Word export` | ✅ |
+| Phase 14.5 campaigns | `feat: connect campaigns to launch plan flow, add priority badges to projects, reorder navbar` | ✅ |
+| Phase 14.5 fix | `fix: add project_id and content to campaigns query, fix campaign grouping in Campaigns page` | ✅ |
 | Phase 15 complete | `docs: add v3 speak guide, update README and architecture docs` | ⏳ |
 
 ---
